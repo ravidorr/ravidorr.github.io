@@ -22,7 +22,6 @@
 				y=e.createElement(n);y.async=!0;y.src='https://pendo-magic-static.storage.googleapis.com/agent/static/'+apiKey+'/pendo.js';
 				z=e.getElementsByTagName(n)[0];z.parentNode.insertBefore(y,z);})(window,document,'script','pendo')
 
-
 			var url = window.location.search;
 			var queryString = {};
 			// from https://stevenbenner.com/2010/03/javascript-regex-trick-parse-a-query-string-into-an-object/
@@ -33,20 +32,31 @@
 				}
 			);
 
-			$.getJSON('//freegeoip.net/json/?callback=?', function (data) {
-				pendo.initialize({
-					visitor: {
-						id: queryString.visitor || data.ip
-					},
-					apiKey: 'c9629d5c-7ce7-4a72-638e-f19cba667267',
-					account: {
-						id: data['metro_code'],
-						city: data.city,
-						zipCode: data['zip_code']
-					}
-				});
-			});
+			var accounts = [
+				{
+					zipCode: 90210,
+					id: 1,
+					city: 'Beverly Hills'
+				}, {
+					zipCode: 27601,
+					id: 2,
+					city: 'Raleigh'
+				}, {
+					zipCode: 10001,
+					id: 3,
+					city: 'New York City'
+				}
+			];
 
+			var account = accounts[Math.floor(Math.random() * accounts.length)];
+
+			pendo.initialize({
+				visitor: {
+					id: queryString.visitor || Math.floor(Math.random() * 999999)
+				},
+				apiKey: 'c9629d5c-7ce7-4a72-638e-f19cba667267',
+				account: account
+			});
 		})('c9629d5c-7ce7-4a72-638e-f19cba667267');
     </script>
   </head>
