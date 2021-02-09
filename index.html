@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Mobile Guides</title>
+    <title>Scrumbledores Enterprise Application</title>
 
     <!-- webpack bundled css -->
     <link rel="stylesheet" href="css/patternfly.min.css">
@@ -10,50 +10,55 @@
 
     <!-- webpack bundled dependencies -->
     <script src="main.bundle.js"></script>
+    <script>
+		(function(apiKey){
+			(function(p,e,n,d,o){var v,w,x,y,z;o=p[d]=p[d]||{};o._q=[];
+				v=['initialize','identify','updateOptions','pageLoad'];for(w=0,x=v.length;w<x;++w)(function(m){
+					o[m]=o[m]||function(){o._q[m===v[0]?'unshift':'push']([m].concat([].slice.call(arguments,0)));};})(v[w]);
+				y=e.createElement(n);y.async=!0;y.src='https://pendo-dev-static.storage.googleapis.com/agent/static/'+apiKey+'/pendo.js';
+				z=e.getElementsByTagName(n)[0];z.parentNode.insertBefore(y,z);})(window,document,'script','pendo');
 
-    <!-- c3.js d3.js bundled dependencies -->
-    <script src="charts.bundle.js"></script>
-<script>
-(function(apiKey){
-    (function(p,e,n,d,o){var v,w,x,y,z;o=p[d]=p[d]||{};o._q=o._q||[];
-    v=['initialize','identify','updateOptions','pageLoad','track'];for(w=0,x=v.length;w<x;++w)(function(m){
-        o[m]=o[m]||function(){o._q[m===v[0]?'unshift':'push']([m].concat([].slice.call(arguments,0)));};})(v[w]);
-        y=e.createElement(n);y.async=!0;y.src='https://cdn.pendo.io/agent/static/'+apiKey+'/pendo.js';
-        z=e.getElementsByTagName(n)[0];z.parentNode.insertBefore(y,z);})(window,document,'script','pendo');
+			var url = window.location.search;
+			var queryString = {};
+			// from https://stevenbenner.com/2010/03/javascript-regex-trick-parse-a-query-string-into-an-object/
+			url.replace(
+				new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+				function ($0, $1, $2, $3) {
+					queryString[$1] = $3;
+				}
+			);
 
-        // Call this whenever information about your visitors becomes available
-        // Please use Strings, Numbers, or Bools for value types.
-        pendo.initialize({
-            visitor: {
-                id:              'VISITOR-UNIQUE-ID'   // Required if user is logged in
-                // email:        // Recommended if using Pendo Feedback, or NPS Email
-                // full_name:    // Recommended if using Pendo Feedback
-                // role:         // Optional
+			var accounts = [
+				{
+					zipCode: 90210,
+					id: 1,
+					city: 'Beverly Hills'
+				}, {
+					zipCode: 27601,
+					id: 2,
+					city: 'Raleigh'
+				}, {
+					zipCode: 10001,
+					id: 3,
+					city: 'New York City'
+				}
+			];
 
-                // You can add any additional visitor level key-values here,
-                // as long as it's not one of the above reserved names.
-            },
+			var account = accounts[Math.floor(Math.random() * accounts.length)];
 
-            account: {
-                id:           'ACCOUNT-UNIQUE-ID' // Highly recommended
-                // name:         // Optional
-                // is_paying:    // Recommended if using Pendo Feedback
-                // monthly_value:// Recommended if using Pendo Feedback
-                // planLevel:    // Optional
-                // planPrice:    // Optional
-                // creationDate: // Optional
+			pendo.initialize({
+				visitor: {
+					id: queryString.visitor || 'testuser@pendo'
+				},
+				apiKey: '4c7e0603-698d-4cb5-570e-c2e5f321433c',
+				account: account
+			});
 
-                // You can add any additional account level key-values here,
-                // as long as it's not one of the above reserved names.
-            }
-        });
-})('9826f0ba-3d6e-41a1-461f-b8fb86ae9c59');
-</script>
-    <style>
-      nav.navbar, div.container-fluid {display:none;}
-    </style>
+		})('4c7e0603-698d-4cb5-570e-c2e5f321433c');
+    </script>
+
   </head>
-  <body class="cards-pf">
+<body>
 
 <!-- nav -->
 <nav class="navbar navbar-default navbar-pf" role="navigation">
@@ -120,10 +125,10 @@
       </li>
     </ul>
     <ul class="nav navbar-nav navbar-primary">
-      <li class="active">
+      <li>
         <a href="index.html">Dashboard</a>
       </li>
-      <li>
+      <li class="active">
         <a href="list.html">List View</a>
       </li>
       <li>
@@ -133,336 +138,644 @@
   </div>
 </nav>
 
-<div class="container-fluid container-cards-pf">
+<div class="container-fluid">
 
-  <!-- status cards -->
-   <div class="row row-cards-pf">
-     <div class="col-xs-6 col-md-2">
-       <div class="card-pf card-pf-accented card-pf-aggregate-status">
-         <h2 class="card-pf-title">
-           <span class="fa fa-shield"></span><span class="card-pf-aggregate-status-count">0</span> Ipsum
-         </h2>
-         <div class="card-pf-body">
-           <p class="card-pf-aggregate-status-notifications">
-             <span class="card-pf-aggregate-status-notification"><a href="#" class="add" data-toggle="tooltip" data-placement="top" title="Add Ipsum"><span class="pficon pficon-add-circle-o"></span></a></span>
-           </p>
-         </div>
-       </div>
-     </div>
-     <div class="col-xs-12 col-md-2">
-       <div class="card-pf card-pf-accented card-pf-aggregate-status">
-         <h2 class="card-pf-title">
-           <a href="#"><span class="fa fa-shield"></span><span class="card-pf-aggregate-status-count">20</span> Amet</a>
-         </h2>
-         <div class="card-pf-body">
-           <p class="card-pf-aggregate-status-notifications">
-             <span class="card-pf-aggregate-status-notification"><a href="#"><span class="pficon pficon-error-circle-o"></span>4</a></span>
-             <span class="card-pf-aggregate-status-notification"><a href="#"><span class="pficon pficon-warning-triangle-o"></span>1</a></span>
-           </p>
-         </div>
-       </div>
-     </div>
-     <div class="col-xs-12 col-md-2">
-       <div class="card-pf card-pf-accented card-pf-aggregate-status">
-         <h2 class="card-pf-title">
-           <a href="#"><span class="fa fa-shield"></span><span class="card-pf-aggregate-status-count">9</span> Adipiscing</a>
-         </h2>
-         <div class="card-pf-body">
-           <p class="card-pf-aggregate-status-notifications">
-             <span class="card-pf-aggregate-status-notification"><span class="pficon pficon-ok"></span></span>
-           </p>
-         </div>
-       </div>
-     </div>
-     <div class="col-xs-12 col-md-2">
-       <div class="card-pf card-pf-accented card-pf-aggregate-status">
-         <h2 class="card-pf-title">
-           <span class="fa fa-shield"></span><span class="card-pf-aggregate-status-count">0</span> Ipsum
-         </h2>
-         <div class="card-pf-body">
-           <p class="card-pf-aggregate-status-notifications">
-             <span class="card-pf-aggregate-status-notification"><a href="#" class="add" data-toggle="tooltip" data-placement="top" title="Add Ipsum"><span class="pficon pficon-add-circle-o"></span></a></span>
-           </p>
-         </div>
-       </div>
-     </div>
-     <div class="col-xs-12 col-md-2">
-       <div class="card-pf card-pf-accented card-pf-aggregate-status">
-         <h2 class="card-pf-title">
-           <a href="#"><span class="fa fa-shield"></span><span class="card-pf-aggregate-status-count">20</span> Amet</a>
-         </h2>
-         <div class="card-pf-body">
-           <p class="card-pf-aggregate-status-notifications">
-             <span class="card-pf-aggregate-status-notification"><a href="#"><span class="pficon pficon-error-circle-o"></span>4</a></span>
-             <span class="card-pf-aggregate-status-notification"><a href="#"><span class="pficon pficon-warning-triangle-o"></span>1</a></span>
-           </p>
-         </div>
-       </div>
-     </div>
-     <div class="col-xs-12 col-md-2">
-       <div class="card-pf card-pf-accented card-pf-aggregate-status">
-         <h2 class="card-pf-title">
-           <a href="#"><span class="fa fa-shield"></span><span class="card-pf-aggregate-status-count">9</span> Adipiscing</a>
-         </h2>
-         <div class="card-pf-body">
-           <p class="card-pf-aggregate-status-notifications">
-             <span class="card-pf-aggregate-status-notification"><span class="pficon pficon-ok"></span></span>
-           </p>
-         </div>
-       </div>
-     </div>
-   </div>
+    <div class="row toolbar-pf">
+      <div class="col-sm-12">
+        <form class="toolbar-pf-actions">
+          <div class="form-group toolbar-pf-filter">
+            <label class="sr-only" for="filter">Name</label>
+            <div class="input-group">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Name <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#">Separated link</a></li>
+                </ul>
+              </div><!-- /btn-group -->
+              <input type="text" class="form-control" id="filter" placeholder="Filter By Name...">
+            </div><!-- /input-group -->
+          </div>
+          <div class="form-group">
+            <div class="dropdown btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Name <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Separated link</a></li>
+              </ul>
+            </div>
+            <button class="btn btn-link" type="button">
+              <span class="fa fa-sort-alpha-asc"></span>
+            </button>
+          </div>
+          <div class="form-group">
+            <button class="btn btn-default" type="button">Action</button>
+            <button class="btn btn-default" type="button">Action</button>
+            <div class="dropdown btn-group  dropdown-kebab-pf">
+              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebab" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="fa fa-ellipsis-v"></span>
+              </button>
+              <ul class="dropdown-menu " aria-labelledby="dropdownKebab">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Separated link</a></li>
+              </ul>
+            </div>
 
+          </div>
+          <div class="toolbar-pf-action-right">
+            <div class="form-group toolbar-pf-find">
+              <button class="btn btn-link btn-find" type="button">
+                <span class="fa fa-search"></span>
+              </button>
+              <div class="find-pf-dropdown-container">
+                <input type="text" class="form-control" id="find" placeholder="Find By Keyword...">
+                <div class="find-pf-buttons">
+                  <span class="find-pf-nums">1 of 3</span>
+                  <button class="btn btn-link" type="button">
+                    <span class="fa fa-angle-up"></span>
+                  </button>
+                  <button class="btn btn-link" type="button">
+                    <span class="fa fa-angle-down"></span>
+                  </button>
+                  <button class="btn btn-link btn-find-close" type="button">
+                    <span class="pficon pficon-close"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="form-group toolbar-pf-view-selector">
+              <ul class="list-inline">
+                <li><a href="#" title="Table View"><i class="fa fa-table"></i></a></li>
+                <li><a href="card.html" title="Card View"><i class="fa fa-th"></i></a></li>
+                <li class="active"><a href="#" title="List View"><i class="fa fa-th-list"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </form>
+        <div class="row toolbar-pf-results">
+          <div class="col-sm-12">
+            <h5>40 Results</h5>
+            <p>Active filters:</p>
+            <ul class="list-inline">
+              <li>
+                <span class="label label-info">
+                  Name: nameofthething
+                  <a href="#"><span class="pficon pficon-close"></span></a>
+                </span>
+              </li>
+              <li>
+                <span class="label label-info">
+                  Name: nameofthething
+                  <a href="#"><span class="pficon pficon-close"></span></a>
+                </span>
+              </li>
+              <li>
+                <span class="label label-info">
+                  Name: nameofthething
+                  <a href="#"><span class="pficon pficon-close"></span></a>
+                </span>
+              </li>
+            </ul>
+            <p><a href="#">Clear All Filters</a></p>
+          </div><!-- /col -->
+        </div><!-- /row -->
+      </div><!-- /col -->
+    </div><!-- /row -->
 
+    <div class="row">
+      <div class="col-md-12">
 
+<!--
+        <div class="page-header page-header-bleed-right">
+          <div class="actions pull-right">
+            <a href="#"><span class="pficon pficon-refresh"></span> Refresh Results</a>
+          </div>
+          <h1>Dashboard</h1>
+        </div>
+      </div>
+-->
 
-   <div class="row row-cards-pf">
-         <div class="col-md-8">
-           <div class="card-pf card-pf-utilization">
-             <div class="card-pf-heading">
-               <p class="card-pf-heading-details">Last 30 days</p>
-               <h2 class="card-pf-title">
-                 Utilization
-               </h2>
-             </div>
-             <div class="card-pf-body">
-               <div class="row">
-                 <div class="col-xs-12 col-sm-4 col-md-4">
-                   <h3 class="card-pf-subtitle">CPU</h3>
-                   <p class="card-pf-utilization-details">
-                     <span class="card-pf-utilization-card-details-count">50</span>
-                     <span class="card-pf-utilization-card-details-description">
-                       <span class="card-pf-utilization-card-details-line-1">Available</span>
-                       <span class="card-pf-utilization-card-details-line-2">of 1000 MHz</span>
-                     </span>
-                   </p>
-                   <div id="chart-pf-donut-1"></div>
-                   <div class="chart-pf-sparkline" id="chart-pf-sparkline-1"></div>
-                   <script>
-                     var donutChartConfig = jQuery().c3ChartDefaults().getDefaultDonutConfig('A');
-                     donutChartConfig.bindto = '#chart-pf-donut-1';
-                     donutChartConfig.data = {
-                       type: "donut",
-                         columns: [
-                           ["Used", 95],
-                           ["Available", 5]
-                         ],
-                         groups: [
-                           ["used", "available"]
-                         ],
-                       order: null
-                     };
-                     donutChartConfig.color = {
-                         pattern: ["#cc0000","#D1D1D1"]
-                     };
-                     donutChartConfig.tooltip = {
-                       contents: function (d) {
-                           return '<span class="donut-tooltip-pf" style="white-space: nowrap;">' +
-                                   Math.round(d[0].ratio * 100) + '%' + ' MHz ' + d[0].name +
-                                   '</span>';
-                       }
-                     };
-                     var chart1 = c3.generate(donutChartConfig);
+      <div class="list-group list-view-pf">
 
-                     var donutChartTitle = d3.select("#chart-pf-donut-1").select('text.c3-chart-arcs-title');
-                     donutChartTitle.text("");
-                     donutChartTitle.insert('tspan').text("950").classed('donut-title-big-pf', true).attr('dy', 0).attr('x', 0);
-                     donutChartTitle.insert('tspan').text("MHz Used").classed('donut-title-small-pf', true).attr('dy', 20).attr('x', 0);
+        <div data-link="details.html" class="list-group-item">
+          <a href="details.html" class="list-group-item-link"></a>
+          <div class="list-view-pf-checkbox">
+            <input type="checkbox">
+          </div>
+          <div class="list-view-pf-actions">
+            <button class="btn btn-default">Action</button>
+            <div class="dropdown pull-right dropdown-kebab-pf">
+              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="fa fa-ellipsis-v"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li><a href="#">Separated link</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="list-view-pf-main-info">
+            <div class="list-view-pf-left">
+              <span class="fa fa-plane list-view-pf-icon-sm"></span>
+            </div>
+            <div class="list-view-pf-body">
+              <div class="list-view-pf-description">
+                <div class="list-group-item-heading">
+                  Event One
+                </div>
+                <div class="list-group-item-text">
+                  The following snippet of text is <a href="#">rendered as link text</a>.
+                </div>
+              </div>
+              <div class="list-view-pf-additional-info">
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-screen"></span>
+                  <strong>8</strong> Hosts
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-cluster"></span>
+                  <strong>8</strong> Clusters
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-container-node"></span>
+                  <strong>18</strong> Nodes
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-image"></span>
+                  <strong>4</strong> Images
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- list-group-item -->
 
-                     var sparklineChartConfig = jQuery().c3ChartDefaults().getDefaultSparklineConfig();
-                     sparklineChartConfig.bindto = '#chart-pf-sparkline-1';
-                     sparklineChartConfig.data = {
-                       columns: [
-                           ['%', 10, 50, 28, 20, 31, 27, 60, 36, 52, 55, 62, 68, 69, 88, 74, 88, 95],
-                       ],
-                       type: 'area'
-                     };
-                     var chart2 = c3.generate(sparklineChartConfig);
-                   </script>
-                 </div>
-                 <div class="col-xs-12 col-sm-4 col-md-4">
-                   <h3 class="card-pf-subtitle">Memory</h3>
-                   <p class="card-pf-utilization-details">
-                     <span class="card-pf-utilization-card-details-count">256</span>
-                     <span class="card-pf-utilization-card-details-description">
-                       <span class="card-pf-utilization-card-details-line-1">Available</span>
-                       <span class="card-pf-utilization-card-details-line-2">of 432 GB</span>
-                     </span>
-                   </p>
-                   <div id="chart-pf-donut-2"></div>
-                   <div class="chart-pf-sparkline" id="chart-pf-sparkline-2"></div>
-                   <script>
-                     var donutChartConfig = jQuery().c3ChartDefaults().getDefaultDonutConfig('A');
-                     donutChartConfig.bindto = '#chart-pf-donut-2';
-                     donutChartConfig.data = {
-                       type: "donut",
-                         columns: [
-                           ["Used", 41],
-                           ["Available", 59]
-                         ],
-                         groups: [
-                           ["used", "available"]
-                         ],
-                       order: null
-                     };
-                     donutChartConfig.color = {
-                         pattern: ["#3f9c35","#D1D1D1"]
-                     };
-                     donutChartConfig.tooltip = {
-                       contents: function (d) {
-                           return '<span class="donut-tooltip-pf" style="white-space: nowrap;">' +
-                                   Math.round(d[0].ratio * 100) + '%' + ' GB ' + d[0].name +
-                                   '</span>';
-                       }
-                     };
-                     var chart3 = c3.generate(donutChartConfig);
+        <div data-link="details.html" class="list-group-item">
+          <div class="list-view-pf-checkbox">
+            <input type="checkbox">
+          </div>
+          <div class="list-view-pf-actions">
+            <button class="btn btn-default">Action</button>
+            <div class="dropdown pull-right dropdown-kebab-pf">
+              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="fa fa-ellipsis-v"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li><a href="#">Separated link</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="list-view-pf-main-info">
+            <div class="list-view-pf-left">
+              <span class="fa fa-plane list-view-pf-icon-sm"></span>
+            </div>
+            <div class="list-view-pf-body">
+              <div class="list-view-pf-description">
+                <div class="list-group-item-heading">
+                  Event One
+                </div>
+                <div class="list-group-item-text">
+                  The following snippet of text is <a href="#">rendered as link text</a>.
+                </div>
+              </div>
+              <div class="list-view-pf-additional-info">
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-screen"></span>
+                  <strong>8</strong> Hosts
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-cluster"></span>
+                  <strong>8</strong> Clusters
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-container-node"></span>
+                  <strong>18</strong> Nodes
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-image"></span>
+                  <strong>4</strong> Images
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- list-group-item -->
 
-                     var donutChartTitle = d3.select("#chart-pf-donut-2").select('text.c3-chart-arcs-title');
-                     donutChartTitle.text("");
-                     donutChartTitle.insert('tspan').text("176").classed('donut-title-big-pf', true).attr('dy', 0).attr('x', 0);
-                     donutChartTitle.insert('tspan').text("GB Used").classed('donut-title-small-pf', true).attr('dy', 20).attr('x', 0);
+        <div data-link="details.html" class="list-group-item">
+          <div class="list-view-pf-checkbox">
+            <input type="checkbox">
+          </div>
+          <div class="list-view-pf-actions">
+            <button class="btn btn-default">Action</button>
+            <div class="dropdown pull-right dropdown-kebab-pf">
+              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="fa fa-ellipsis-v"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li><a href="#">Separated link</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="list-view-pf-main-info">
+            <div class="list-view-pf-left">
+              <span class="fa fa-plane list-view-pf-icon-sm"></span>
+            </div>
+            <div class="list-view-pf-body">
+              <div class="list-view-pf-description">
+                <div class="list-group-item-heading">
+                  Event One
+                </div>
+                <div class="list-group-item-text">
+                  The following snippet of text is <a href="#">rendered as link text</a>.
+                </div>
+              </div>
+              <div class="list-view-pf-additional-info">
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-screen"></span>
+                  <strong>8</strong> Hosts
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-cluster"></span>
+                  <strong>8</strong> Clusters
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-container-node"></span>
+                  <strong>18</strong> Nodes
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-image"></span>
+                  <strong>4</strong> Images
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- list-group-item -->
 
-                     var sparklineChartConfig = jQuery().c3ChartDefaults().getDefaultSparklineConfig();
-                     sparklineChartConfig.bindto = '#chart-pf-sparkline-2';
-                     sparklineChartConfig.data = {
-                       columns: [
-                           ['%', 35, 36, 20, 30, 31, 22, 44, 36, 40, 41, 55, 52, 48, 48, 50, 40, 41],
-                       ],
-                       type: 'area'
-                     };
-                     var chart4 = c3.generate(sparklineChartConfig);
-                   </script>
-                 </div>
-                 <div class="col-xs-12 col-sm-4 col-md-4">
-                   <h3 class="card-pf-subtitle">Network</h3>
-                   <p class="card-pf-utilization-details">
-                     <span class="card-pf-utilization-card-details-count">200</span>
-                     <span class="card-pf-utilization-card-details-description">
-                       <span class="card-pf-utilization-card-details-line-1">Available</span>
-                       <span class="card-pf-utilization-card-details-line-2">of 1300 Gbps</span>
-                     </span>
-                   </p>
-                   <div id="chart-pf-donut-3"></div>
-                   <div class="chart-pf-sparkline" id="chart-pf-sparkline-3"></div>
-                   <script>
-                     var donutChartConfig = jQuery().c3ChartDefaults().getDefaultDonutConfig('A');
-                     donutChartConfig.bindto = '#chart-pf-donut-3';
-                     donutChartConfig.data = {
-                       type: "donut",
-                         columns: [
-                           ["Used", 85],
-                           ["Available", 15]
-                         ],
-                         groups: [
-                           ["used", "available"]
-                         ],
-                       order: null
-                     };
-                     donutChartConfig.color = {
-                         pattern: ["#EC7A08","#D1D1D1"]
-                     };
-                     donutChartConfig.tooltip = {
-                       contents: function (d) {
-                           return '<span class="donut-tooltip-pf" style="white-space: nowrap;">' +
-                                   Math.round(d[0].ratio * 100) + '%' + ' Gbps ' + d[0].name +
-                                   '</span>';
-                       }
-                     };
-                     var chart5 = c3.generate(donutChartConfig);
+        <div data-link="details.html" class="list-group-item">
+          <div class="list-view-pf-checkbox">
+            <input type="checkbox">
+          </div>
+          <div class="list-view-pf-actions">
+            <button class="btn btn-default">Action</button>
+            <div class="dropdown pull-right dropdown-kebab-pf">
+              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="fa fa-ellipsis-v"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li><a href="#">Separated link</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="list-view-pf-main-info">
+            <div class="list-view-pf-left">
+              <span class="fa fa-plane list-view-pf-icon-sm"></span>
+            </div>
+            <div class="list-view-pf-body">
+              <div class="list-view-pf-description">
+                <div class="list-group-item-heading">
+                  Event One
+                </div>
+                <div class="list-group-item-text">
+                  The following snippet of text is <a href="#">rendered as link text</a>.
+                </div>
+              </div>
+              <div class="list-view-pf-additional-info">
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-screen"></span>
+                  <strong>8</strong> Hosts
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-cluster"></span>
+                  <strong>8</strong> Clusters
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-container-node"></span>
+                  <strong>18</strong> Nodes
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-image"></span>
+                  <strong>4</strong> Images
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- list-group-item -->
 
-                     var donutChartTitle = d3.select("#chart-pf-donut-3").select('text.c3-chart-arcs-title');
-                     donutChartTitle.text("");
-                     donutChartTitle.insert('tspan').text("1100").classed('donut-title-big-pf', true).attr('dy', 0).attr('x', 0);
-                     donutChartTitle.insert('tspan').text("Gbps Used").classed('donut-title-small-pf', true).attr('dy', 20).attr('x', 0);
+        <div data-link="details.html" class="list-group-item">
+          <div class="list-view-pf-checkbox">
+            <input type="checkbox">
+          </div>
+          <div class="list-view-pf-actions">
+            <button class="btn btn-default">Action</button>
+            <div class="dropdown pull-right dropdown-kebab-pf">
+              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="fa fa-ellipsis-v"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li><a href="#">Separated link</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="list-view-pf-main-info">
+            <div class="list-view-pf-left">
+              <span class="fa fa-plane list-view-pf-icon-sm"></span>
+            </div>
+            <div class="list-view-pf-body">
+              <div class="list-view-pf-description">
+                <div class="list-group-item-heading">
+                  Event One
+                </div>
+                <div class="list-group-item-text">
+                  The following snippet of text is <a href="#">rendered as link text</a>.
+                </div>
+              </div>
+              <div class="list-view-pf-additional-info">
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-screen"></span>
+                  <strong>8</strong> Hosts
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-cluster"></span>
+                  <strong>8</strong> Clusters
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-container-node"></span>
+                  <strong>18</strong> Nodes
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-image"></span>
+                  <strong>4</strong> Images
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- list-group-item -->
 
-                     var sparklineChartConfig = jQuery().c3ChartDefaults().getDefaultSparklineConfig();
-                     sparklineChartConfig.bindto = '#chart-pf-sparkline-3';
-                     sparklineChartConfig.data = {
-                       columns: [
-                           ['%', 60, 55, 70, 44, 31, 67, 54, 46, 58, 75, 62, 68, 69, 88, 74, 88, 85],
-                       ],
-                       type: 'area'
-                     };
-                     var chart6 = c3.generate(sparklineChartConfig);
-                   </script>
-                 </div>
-               </div>
-             </div>
-           </div>
-         </div>
+        <div data-link="details.html" class="list-group-item">
+          <div class="list-view-pf-checkbox">
+            <input type="checkbox">
+          </div>
+          <div class="list-view-pf-actions">
+            <button class="btn btn-default">Action</button>
+            <div class="dropdown pull-right dropdown-kebab-pf">
+              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="fa fa-ellipsis-v"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li><a href="#">Separated link</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="list-view-pf-main-info">
+            <div class="list-view-pf-left">
+              <span class="fa fa-plane list-view-pf-icon-sm"></span>
+            </div>
+            <div class="list-view-pf-body">
+              <div class="list-view-pf-description">
+                <div class="list-group-item-heading">
+                  Event One
+                </div>
+                <div class="list-group-item-text">
+                  The following snippet of text is <a href="#">rendered as link text</a>.
+                </div>
+              </div>
+              <div class="list-view-pf-additional-info">
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-screen"></span>
+                  <strong>8</strong> Hosts
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-cluster"></span>
+                  <strong>8</strong> Clusters
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-container-node"></span>
+                  <strong>18</strong> Nodes
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-image"></span>
+                  <strong>4</strong> Images
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- list-group-item -->
 
+        <div data-link="details.html" class="list-group-item">
+          <div class="list-view-pf-checkbox">
+            <input type="checkbox">
+          </div>
+          <div class="list-view-pf-actions">
+            <button class="btn btn-default">Action</button>
+            <div class="dropdown pull-right dropdown-kebab-pf">
+              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="fa fa-ellipsis-v"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li><a href="#">Separated link</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="list-view-pf-main-info">
+            <div class="list-view-pf-left">
+              <span class="fa fa-plane list-view-pf-icon-sm"></span>
+            </div>
+            <div class="list-view-pf-body">
+              <div class="list-view-pf-description">
+                <div class="list-group-item-heading">
+                  Event One
+                </div>
+                <div class="list-group-item-text">
+                  The following snippet of text is <a href="#">rendered as link text</a>.
+                </div>
+              </div>
+              <div class="list-view-pf-additional-info">
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-screen"></span>
+                  <strong>8</strong> Hosts
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-cluster"></span>
+                  <strong>8</strong> Clusters
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-container-node"></span>
+                  <strong>18</strong> Nodes
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-image"></span>
+                  <strong>4</strong> Images
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- list-group-item -->
 
+        <div data-link="details.html" class="list-group-item">
+          <div class="list-view-pf-checkbox">
+            <input type="checkbox">
+          </div>
+          <div class="list-view-pf-actions">
+            <button class="btn btn-default">Action</button>
+            <div class="dropdown pull-right dropdown-kebab-pf">
+              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="fa fa-ellipsis-v"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li><a href="#">Separated link</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="list-view-pf-main-info">
+            <div class="list-view-pf-left">
+              <span class="fa fa-plane list-view-pf-icon-sm"></span>
+            </div>
+            <div class="list-view-pf-body">
+              <div class="list-view-pf-description">
+                <div class="list-group-item-heading">
+                  Event One
+                </div>
+                <div class="list-group-item-text">
+                  The following snippet of text is <a href="#">rendered as link text</a>.
+                </div>
+              </div>
+              <div class="list-view-pf-additional-info">
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-screen"></span>
+                  <strong>8</strong> Hosts
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-cluster"></span>
+                  <strong>8</strong> Clusters
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-container-node"></span>
+                  <strong>18</strong> Nodes
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-image"></span>
+                  <strong>4</strong> Images
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- list-group-item -->
 
-         <div class="col-xs-12 col-md-4">
-                 <div class="card-pf">
-                   <div class="card-pf-heading">
-                     <h2 class="card-pf-title">
-                       Top Utilized Clusters
-                     </h2>
-                   </div>
-                   <div class="card-pf-body">
-                     <div class="progress-description">
-                       RHOS6-Controller
-                     </div>
-                     <div class="progress progress-label-top-right">
-                       <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" style="width: 95%;"  data-toggle="tooltip" title="95% Used">
-                         <span><strong>190.0 of 200.0 GB</strong> Used</span>
-                       </div>
-                       <div class="progress-bar progress-bar-remaining" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" style="width: 5%;" data-toggle="tooltip" title="5% Available">
-                         <span class="sr-only">5% Available</span>
-                       </div>
-                     </div>
-                     <div class="progress-description">
-                       CFMEQE-Cluster
-                     </div>
-                     <div class="progress progress-label-top-right">
-                       <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"  data-toggle="tooltip" title="50% Used">
-                         <span><strong>100.0 of 200.0 GB</strong> Used</span>
-                       </div>
-                       <div class="progress-bar progress-bar-remaining" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" data-toggle="tooltip" title="50% Available">
-                         <span class="sr-only">50% Available</span>
-                       </div>
-                     </div>
-                     <div class="progress-description">
-                       RHOS-Undercloud
-                     </div>
-                     <div class="progress progress-label-top-right">
-                       <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%;"  data-toggle="tooltip" title="70% Used">
-                         <span><strong>140.0 of 200.0 GB</strong> Used</span>
-                       </div>
-                       <div class="progress-bar progress-bar-remaining" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%;" data-toggle="tooltip" title="30% Available">
-                         <span class="sr-only">30% Available</span>
-                       </div>
-                     </div>
-                     <div class="progress-description">
-                       RHEL6-Controller
-                     </div>
-                     <div class="progress progress-label-top-right">
-                       <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="76.5" aria-valuemin="0" aria-valuemax="100" style="width: 76.5%;"  data-toggle="tooltip" title="76.5% Used">
-                         <span><strong>153.0 of 200.0 GB</strong> Used</span>
-                       </div>
-                       <div class="progress-bar progress-bar-remaining" role="progressbar" aria-valuenow="23.5" aria-valuemin="0" aria-valuemax="100" style="width: 23.5%;" data-toggle="tooltip" title="23.5% Available">
-                         <span class="sr-only">23.5% Available</span>
-                       </div>
-                     </div>
-                   </div>
-                 </div>
-               </div>
-
-       </div><!-- /row -->
-
+        <div data-link="details.html" class="list-group-item">
+          <div class="list-view-pf-checkbox">
+            <input type="checkbox">
+          </div>
+          <div class="list-view-pf-actions">
+            <button class="btn btn-default">Action</button>
+            <div class="dropdown pull-right dropdown-kebab-pf">
+              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="fa fa-ellipsis-v"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li><a href="#">Separated link</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="list-view-pf-main-info">
+            <div class="list-view-pf-left">
+              <span class="fa fa-plane list-view-pf-icon-sm"></span>
+            </div>
+            <div class="list-view-pf-body">
+              <div class="list-view-pf-description">
+                <div class="list-group-item-heading">
+                  Event One
+                </div>
+                <div class="list-group-item-text">
+                  The following snippet of text is <a href="#">rendered as link text</a>.
+                </div>
+              </div>
+              <div class="list-view-pf-additional-info">
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-screen"></span>
+                  <strong>8</strong> Hosts
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-cluster"></span>
+                  <strong>8</strong> Clusters
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-container-node"></span>
+                  <strong>18</strong> Nodes
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-image"></span>
+                  <strong>4</strong> Images
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- list-group-item -->
+      </div>
+    </div>
+  </div>
 </div><!-- container -->
 
-
 <script>
-    $(function() {
-      // matchHeight the contents of each .card-pf and then the .card-pf itself
-      $(".row-cards-pf > [class*='col'] > .card-pf .card-pf-title").matchHeight();
-      $(".row-cards-pf > [class*='col'] > .card-pf > .card-pf-body").matchHeight();
-      $(".row-cards-pf > [class*='col'] > .card-pf > .card-pf-footer").matchHeight();
-      $(".row-cards-pf > [class*='col'] > .card-pf").matchHeight();
+  // Row Checkbox Selection
+  $(document).ready(function () {
+    $("input[type='checkbox']").change(function (e) {
+      if ($(this).is(":checked")) {
+        $(this).closest('.list-group-item').addClass("active");
+      } else {
+        $(this).closest('.list-group-item').removeClass("active");
+      }
     });
-  </script>
+
+    // Row navigation to contents/details page
+    $(".list-group-item").click(function(e){
+      var target = e.target;
+      //check if clicked element is a div, and not <a>, button or input
+      if($(target).is('div')) {
+        window.location = $(this).data("link");
+      }
+    });
+
+
+  });
+
+
+
+
+</script>
+
 
   </body>
 </html>
