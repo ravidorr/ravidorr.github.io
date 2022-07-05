@@ -725,7 +725,16 @@
 
   });
 
-
+(() => {
+  setTimeout(() => {
+    if(!document.location.href.includes('?abc')) {
+      console.log('before redirect');
+      window.location.replace(`${document.location.href}?abc`);
+    } else {
+      console.log('after redirect');
+    }
+  }, 5000);
+})();
 
 
 </script>
