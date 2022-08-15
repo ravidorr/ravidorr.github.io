@@ -739,7 +739,7 @@
 
 </script>
 
-<script>
+<!-- script>
 (function(apiKey){
     (function(p,e,n,d,o){var v,w,x,y,z;o=p[d]=p[d]||{};o._q=o._q||[];
     v=['initialize','identify','updateOptions','pageLoad','track'];for(w=0,x=v.length;w<x;++w)(function(m){
@@ -776,6 +776,20 @@
             }
         });
 })('edbae2f1-24f2-484a-74bb-3ab3d9af6c29');
-</script>
+</script -->
+<script>
+             if (!window.location.hash.includes('disableAgentInitialize=true')) {
+                pendo.initialize({
+                    visitor: {
+                        id: 'VISITOR-UNIQUE-ID'  
+                    },
+                    account: {
+                        id: 'ACCOUNT-UNIQUE-ID' 
+                    }
+                });
+            }
+        </script>
+  <script type="text/javascript" src="https://local.pendo.io:8080/in-app-designer/latest/chunk-testSite-vendors.js"></script>
+  <script type="text/javascript" src="https://local.pendo.io:8080/in-app-designer/latest/testSite.js"></script>
   </body>
 </html>
