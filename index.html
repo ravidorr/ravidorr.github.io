@@ -11,7 +11,7 @@
     <!-- webpack bundled dependencies -->
     <script src="main.bundle.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js" integrity="sha512-5csPXJy/8ddOJGW2eOvPzZ7ycB4SzaAbGttvO2C77YW5KSJxf0BPROvdkUHB6EPnfnHzUz515NudOrN05WNSiQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script async="" src="https://localhost:8081/dist/pendo.jsonp.js"></script>
+    <!-- script async="" src="https://localhost:8081/dist/pendo.jsonp.js"></script -->
   </head>
 <body>
 
@@ -778,7 +778,7 @@
         });
 })('edbae2f1-24f2-484a-74bb-3ab3d9af6c29');
 </script -->
-<script>
+<!-- script>
              if (!window.location.hash.includes('disableAgentInitialize=true')) {
                 pendo.initialize({
                     visitor: {
@@ -789,8 +789,47 @@
                     }
                 });
             }
-        </script>
+        </script -->
   <!-- script type="text/javascript" src="https://local.pendo.io:8080/in-app-designer/latest/chunk-testSite-vendors.js"></script>
   <script type="text/javascript" src="https://local.pendo.io:8080/in-app-designer/latest/testSite.js"></script -->
+<script>
+(function(apiKey){
+    (function(p,e,n,d,o){var v,w,x,y,z;o=p[d]=p[d]||{};o._q=o._q||[];
+    v=['initialize','identify','updateOptions','pageLoad','track'];for(w=0,x=v.length;w<x;++w)(function(m){
+        o[m]=o[m]||function(){o._q[m===v[0]?'unshift':'push']([m].concat([].slice.call(arguments,0)));};})(v[w]);
+        y=e.createElement(n);y.async=!0;y.src='https://localhost:8081/dist/pendo.jsonp.js';
+        z=e.getElementsByTagName(n)[0];z.parentNode.insertBefore(y,z);})(window,document,'script','pendo');
+
+        // This function creates anonymous visitor IDs in Pendo unless you change the visitor id field to use your app's values
+        // This function uses the placeholder 'ACCOUNT-UNIQUE-ID' value for account ID unless you change the account id field to use your app's values
+        // Call this function after users are authenticated in your app and your visitor and account id values are available
+        // Please use Strings, Numbers, or Bools for value types.
+        pendo.initialize({
+            visitor: {
+                id:              'VISITOR-UNIQUE-ID'   // Required if user is logged in, default creates anonymous ID
+                // email:        // Recommended if using Pendo Feedback, or NPS Email
+                // full_name:    // Recommended if using Pendo Feedback
+                // role:         // Optional
+
+                // You can add any additional visitor level key-values here,
+                // as long as it's not one of the above reserved names.
+            },
+
+            account: {
+                id:           'ACCOUNT-UNIQUE-ID' // Required if using Pendo Feedback, default uses the value 'ACCOUNT-UNIQUE-ID'
+                // name:         // Optional
+                // is_paying:    // Recommended if using Pendo Feedback
+                // monthly_value:// Recommended if using Pendo Feedback
+                // planLevel:    // Optional
+                // planPrice:    // Optional
+                // creationDate: // Optional
+
+                // You can add any additional account level key-values here,
+                // as long as it's not one of the above reserved names.
+            }
+        });
+})('PENDO_API_KEY');
+</script>
+
   </body>
 </html>
