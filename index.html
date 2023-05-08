@@ -737,57 +737,8 @@
 
   });
 </script>
-<!-- local agent pendo-mobile-guides env, Raanan Avidor sub, web app
+<!-- run local agent
 <script>
-(function () {
-    window.addEventListener('click', function(e) {
-        if (window._stopcapture) {
-            e.stopPropagation();
-        }
-    }, true);
-
-    var wdio = localStorage.wdio ? JSON.parse(localStorage.wdio) : {
-        src: 'https://local.pendo.io:8081/dist/pendo.jsonp.js',
-        options: {
-            apiKey: '8359b8c1-4fd4-4b5e-5ff6-87154498e673',
-            visitor: {
-                id: 'wdio@pendo.io',
-                idList: ['wdio@pendo.io', 'wdio2@pendo.io']
-            }
-        }
-    };
-
-    window.wdio = wdio;
-    window.PendoConfig = wdio.config;
-
-    var params = new Proxy(new URLSearchParams(window.location.search), {
-        get: (searchParams, prop) => searchParams.get(prop)
-    });
-    if (params['top_only'] && window !== window.top) {
-        return;
-    }
-
-    (function(p,e,n,d,o){var v,w,x,y,z;o=p[d]=p[d]||{};o._q=[];
-v=['initialize','identify','updateOptions','pageLoad', 'track'];for(w=0,x=v.length;w<x;++w)(function(m){
-o[m]=o[m]||function(){o._q[m===v[0]?'unshift':'push']([m].concat([].slice.call(arguments,0)));};})(v[w]);
-y=e.createElement(n);y.async=!0;y.src=wdio.src;
-z=e.getElementsByTagName(n)[0];z.parentNode.insertBefore(y,z);})(window,document,'script','pendo');
-
-    wdio.options.events = {
-        ready: function() {
-            setTimeout(function() {
-                // guidesLoaded triggers before the first guide loop iteration
-                // so give it a chance to run
-                document.body.classList.add('ready');
-            }, 100);
-        }
-    };
-
-    pendo.initialize(wdio.options);
-})();
-</script>
--->
-  <script>
 (function(apiKey){
     (function(p,e,n,d,o){var v,w,x,y,z;o=p[d]=p[d]||{};o._q=o._q||[];
     v=['initialize','identify','updateOptions','pageLoad','track'];for(w=0,x=v.length;w<x;++w)(function(m){
@@ -826,7 +777,8 @@ z=e.getElementsByTagName(n)[0];z.parentNode.insertBefore(y,z);})(window,document
         });
 })();
 </script>
-<!-- pendo-mobile-guides env, Raanan Avidor sub, web app
+-->
+<!-- pendo-mobile-guides env, Raanan Avidor sub, web app -->
 <script>
 (function(apiKey){
     (function(p,e,n,d,o){var v,w,x,y,z;o=p[d]=p[d]||{};o._q=o._q||[];
