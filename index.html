@@ -898,5 +898,65 @@
 })('8f3163d8-f534-4582-6d17-4f7315d38400');
 </script>
   -->
+  <script>
+const axios = require('axios');
+const cheerio = require('cheerio');
+const css = require('css');
+
+const getCSSFromURL = async (url) => {
+    try {
+        const { data: html } = await axios.get(url);
+        const $ = cheerio.load(html);
+        const promises = [];
+        $('link[rel="stylesheet"]').each((i, link) => {
+            const href = $(link).attr('href');
+            let cssURL = href;
+            if (!href.includes('http')) {
+                if (href.startsWith('/')) {
+                    cssURL = url + href;
+                } else {
+                    cssURL = url + '/' + href;
+                }
+            }
+            promises.push(axios.get(cssURL));
+        });
+
+        const cssResponses = await Promise.all(promises);
+        for (let cssResponse of cssResponses) {
+            const cssText = cssResponse.data;
+            const obj = css.parse(cssText);
+            obj.stylesheet.rules.forEach(rule => {
+                if (rule.type === 'rule') {
+                    rule.selectors.forEach(selector => {
+                        console.log('Selector: ', selector);
+                        rule.declarations.forEach(declaration => {
+                            console.log('Property: ', declaration.property);
+                            console.log('Value: ', declaration.value);
+                        });
+                    });
+                }
+            });
+        }
+
+        // Extract inline styles
+        $('[style]').each((i, element) => {
+            const style = $(element).attr('style');
+            const obj = css.parse('* {' + style + '}');
+            const rules = obj.stylesheet.rules[0];
+            rules.selectors = [$(element).get(0).tagName];
+            rules.declarations.forEach(declaration => {
+                console.log('Selector: ', rules.selectors[0]);
+                console.log('Property: ', declaration.property);
+                console.log('Value: ', declaration.value);
+            });
+        });
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+getCSSFromURL('http://example.com');
+
+  </script>
   </body>
 </html>
