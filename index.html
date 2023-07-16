@@ -898,10 +898,35 @@
 })('8f3163d8-f534-4582-6d17-4f7315d38400');
 </script>
   -->
-  <script>
-const axios = require('axios');
-const cheerio = require('cheerio');
-const css = require('css');
+<script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cheerio/1.0.0-rc.12/lib/index.js" integrity="sha512-kdBqGgUvoY+IOBHIx52mzNVWAXgwh4ZqzZ95jg0c0i73IOANu3v3b868V1blCq2drbXzBAARllFCoy67h4rWqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+// See: https://lea.verou.me/2020/07/import-non-esm-libraries-in-es-modules,-with-client-side-vanilla-js/
+async function require(path) {
+	let _module = window.module;
+	window.module = {};
+	await import(path);
+	let exports = module.exports;
+	window.module = _module;
+	return exports;
+}
+
+(async () => { // top-level await cannot come soon enough…
+
+let parse = await require("https://cdn.jsdelivr.net/gh/reworkcss/css@latest/lib/parse/index.js");
+
+let update = () => {
+	let css = document.querySelector("style").textContent;
+	AST.textContent = JSON.stringify(parse(css), null, "\t");
+}
+update();
+
+// Observe CSS changes
+new MutationObserver(update).observe(document.head, {
+	childList: true
+});
+
+})();
 
 const getCSSFromURL = async (url) => {
     try {
