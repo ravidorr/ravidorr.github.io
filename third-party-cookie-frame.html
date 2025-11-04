@@ -1,0 +1,42 @@
+<html>
+
+<body>
+    <button id="generate-handles">generate storage handles</button>
+    <div id="ls-last-check-timestamp"></div>
+    <div id="has-storage-access"></div>
+    <div id="ls-buttons">
+        <button id="window-storage">Write to window.localStorage</button>
+        <button id="rsa-storage" disabled>Write to requestStorageAccess handle</button>
+    </div>
+    <script>
+        const lsLastCheckTimestamp = document.getElementById('ls-last-check-timestamp');
+        const hasStorageAccess = document.getElementById('has-storage-access');
+        const generateHandlesBtn = document.getElementById('generate-handles');
+        const windowStorageBtn = document.getElementById('window-storage');
+        const rsaStorageBtn = document.getElementById('rsa-storage');
+
+        let rsaHandle;
+
+        window.setInterval(() => {
+            lsLastCheckTimestamp.innerText = `Last checked: ${new Date().toLocaleTimeString()}`;
+            document.hasStorageAccess().then(result => {
+                hasStorageAccess.innerText = `Has storage access: ${result}`;
+            });
+        }, 1000);
+
+        generateHandlesBtn.addEventListener('click', async () => {
+            rsaHandle = await document.requestStorageAccess({ all: true });
+            rsaStorageBtn.removeAttribute('disabled');
+        });
+
+        windowStorageBtn.addEventListener('click', () => {
+            window.localStorage.setItem('window-entry', `window-value-${Date.now()}`);
+        });
+
+        rsaStorageBtn.addEventListener('click', () => {
+            rsaHandle.localStorage.setItem('rsa-entry', `rsa-value-${Date.now()}`);
+        });
+    </script>
+</body>
+
+</html>

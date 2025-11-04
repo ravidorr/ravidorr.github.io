@@ -1,0 +1,22 @@
+<html>
+
+<body>
+    <button id="write-btn">Write key 'window-entry' with value 'window-value' to localstorage</button>
+    <div style="margin-top: 20px;">Storage events:</div>
+    <div id="ls-logs"></div>
+    <script>
+        const lsLogs = document.getElementById('ls-logs');
+
+        window.addEventListener('storage', (e) => {
+            console.log('storage event', e)
+            lsLogs.innerHTML = lsLogs.innerHTML + `
+                    <div>
+                        <b>${e.key}</b>: ${e.newValue}
+                    </div>
+                `;
+        });
+
+    </script>
+</body>
+
+</html>
