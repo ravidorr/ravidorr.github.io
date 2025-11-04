@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Scrumbledores Enterprise Application</title>
+    <title>Scrumbledores Enterprise Application - SPA</title>
     <script>
       // Object.freeze (Object.prototype)
     </script>
@@ -18,13 +18,156 @@
     <link href="https://fonts.googleapis.com/css2?family=Alef:wght@700&family=Roboto&display=swap" rel="stylesheet">
     <style>
       * {
-      font-family: 'Alef', sans-serif;
+        font-family: 'Alef', sans-serif;
       }
       .red #pendo-guide-container {
         background-color: red !important;
       }
       .blue #pendo-guide-container {
         background-color: blue !important;
+      }
+
+      /* SPA specific styles */
+      .page-view {
+        display: none;
+      }
+      .page-view.active {
+        display: block;
+      }
+
+      .stats-card {
+        background: #fff;
+        border: 1px solid #d1d1d1;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 3px;
+      }
+
+      .stats-card h3 {
+        margin-top: 0;
+        color: #4d5258;
+      }
+
+      .stats-number {
+        font-size: 2.5em;
+        font-weight: bold;
+        color: #0088ce;
+      }
+
+      .product-card {
+        border: 1px solid #d1d1d1;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 3px;
+        background: #fff;
+        transition: box-shadow 0.3s;
+      }
+
+      .product-card:hover {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+
+      .product-image {
+        width: 100%;
+        height: 200px;
+        background: #f5f5f5;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3em;
+      }
+
+      .cart-item {
+        border-bottom: 1px solid #ededed;
+        padding: 15px 0;
+      }
+
+      .notification {
+        position: fixed;
+        top: 70px;
+        right: 20px;
+        padding: 15px 20px;
+        background: #3f9c35;
+        color: white;
+        border-radius: 3px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        z-index: 9999;
+        display: none;
+      }
+
+      .notification.show {
+        display: block;
+        animation: slideIn 0.3s ease-in-out;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(400px);
+        }
+        to {
+          transform: translateX(0);
+        }
+      }
+
+      .form-section {
+        background: #fff;
+        padding: 20px;
+        margin-bottom: 20px;
+        border: 1px solid #d1d1d1;
+        border-radius: 3px;
+      }
+
+      .cart-badge {
+        background: #cc0000;
+        color: white;
+        border-radius: 10px;
+        padding: 2px 8px;
+        font-size: 12px;
+        margin-left: 5px;
+      }
+
+      .tab-content {
+        background: #fff;
+        border: 1px solid #d1d1d1;
+        border-top: none;
+        padding: 20px;
+      }
+
+      .accordion-item {
+        margin-bottom: 10px;
+      }
+
+      .accordion-header {
+        background: #f5f5f5;
+        padding: 15px;
+        cursor: pointer;
+        border: 1px solid #d1d1d1;
+        border-radius: 3px;
+      }
+
+      .accordion-header:hover {
+        background: #e7e7e7;
+      }
+
+      .accordion-content {
+        display: none;
+        padding: 15px;
+        border: 1px solid #d1d1d1;
+        border-top: none;
+        background: #fff;
+      }
+
+      .accordion-content.active {
+        display: block;
+      }
+
+      .sortable {
+        cursor: pointer;
+      }
+
+      .sortable:hover {
+        background: #f5f5f5;
       }
     </style>
   </head>
@@ -39,14 +182,17 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="/">
+    <a class="navbar-brand" href="#" onclick="navigateTo('dashboard')">
       <img src="img/brand.png" alt="Scrumbledores Enterprise Application" />
     </a>
   </div>
   <div class="collapse navbar-collapse navbar-collapse-1">
     <ul class="nav navbar-nav navbar-utility">
       <li>
-        <a href="#">Status</a>
+        <a href="#" onclick="navigateTo('cart')">
+          <span class="pficon pficon-shopping-cart"></span>
+          Cart <span class="cart-badge" id="cartBadge">0</span>
+        </a>
       </li>
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -55,35 +201,34 @@
         </a>
         <ul class="dropdown-menu">
           <li>
-            <a href="#">Settings</a>
+            <a href="#" onclick="navigateTo('profile')">My Profile</a>
           </li>
           <li>
-            <a href="#">Another link</a>
+            <a href="#" onclick="navigateTo('settings')">Settings</a>
           </li>
           <li>
-            <a href="#">Something else here</a>
+            <a href="#" onclick="openModal('helpModal')">Help</a>
           </li>
           <li class="divider"></li>
           <li class="dropdown-submenu">
             <a tabindex="-1" href="#">More options</a>
             <ul class="dropdown-menu">
               <li>
-                <a href="#">Link</a>
+                <a href="#" onclick="navigateTo('reports')">Reports</a>
               </li>
               <li>
-                <a href="#">Another link</a>
+                <a href="#" onclick="navigateTo('analytics')">Analytics</a>
               </li>
               <li>
-                <a href="#">Something else here</a>
-              </li>
-              <li class="divider"></li>
-              <li class="dropdown-header">Nav header</li>
-              <li>
-                <a href="#">Separated link</a>
+                <a href="#">Billing</a>
               </li>
               <li class="divider"></li>
+              <li class="dropdown-header">Admin</li>
               <li>
-                <a href="#">One more separated link</a>
+                <a href="#">User Management</a>
+              </li>
+              <li>
+                <a href="#">System Settings</a>
               </li>
             </ul>
           </li>
@@ -95,688 +240,1354 @@
       </li>
     </ul>
     <ul class="nav navbar-nav navbar-primary">
-      <li>
-        <a href="index.html">Dashboard</a>
+      <li class="nav-item-dashboard">
+        <a href="#" onclick="navigateTo('dashboard')">Dashboard</a>
       </li>
-      <li class="active">
-        <a href="list.html">List View</a>
+      <li class="nav-item-products">
+        <a href="#" onclick="navigateTo('products')">Products</a>
       </li>
-      <li>
-        <a href="empty.html">Empty State</a>
+      <li class="nav-item-profile">
+        <a href="#" onclick="navigateTo('profile')">Profile</a>
+      </li>
+      <li class="nav-item-reports">
+        <a href="#" onclick="navigateTo('reports')">Reports</a>
+      </li>
+      <li class="nav-item-settings">
+        <a href="#" onclick="navigateTo('settings')">Settings</a>
       </li>
     </ul>
   </div>
 </nav>
 
+<div id="notification" class="notification"></div>
+
 <div class="container-fluid">
 
-    <div class="row toolbar-pf">
-      <div class="col-sm-12">
-        <form class="toolbar-pf-actions">
-          <div class="form-group toolbar-pf-filter">
-            <label class="sr-only" for="filter">Name</label>
-            <div class="input-group">
-              <div class="input-group-btn">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Name <span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li>
-                  <li role="separator" class="divider"></li>
-                  <li><a href="#">Separated link</a></li>
-                </ul>
-              </div><!-- /btn-group -->
-              <input type="text" class="form-control" id="filter" placeholder="Filter By Name...">
-            </div><!-- /input-group -->
-          </div>
-          <div class="form-group">
-            <div class="dropdown btn-group">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Name <span class="caret"></span></button>
-              <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Separated link</a></li>
-              </ul>
-            </div>
-            <button class="btn btn-link" type="button" aria-label="Add item">
-              <span class="fa fa-sort-alpha-asc"></span>
-            </button>
-          </div>
-          <div class="form-group">
-            <button class="btn btn-default" type="button">Action</button>
-            <button class="btn btn-default" type="button">Action</button>
-            <div class="dropdown btn-group  dropdown-kebab-pf">
-              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebab" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" aria-label="Add item">
-                <span class="fa fa-ellipsis-v"></span>
-              </button>
-              <ul class="dropdown-menu " aria-labelledby="dropdownKebab">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Separated link</a></li>
-              </ul>
-            </div>
+  <!-- DASHBOARD PAGE -->
+  <div id="page-dashboard" class="page-view active">
+    <div class="page-header">
+      <h1>Dashboard</h1>
+    </div>
 
-          </div>
-          <div class="toolbar-pf-action-right">
-            <div class="form-group toolbar-pf-find">
-              <button class="btn btn-link btn-find" type="button" aria-label="Add item">
-                <span class="fa fa-search"></span>
-              </button>
-              <div class="find-pf-dropdown-container">
-                <input type="text" class="form-control" id="find" placeholder="Find By Keyword...">
-                <div class="find-pf-buttons">
-                  <span class="find-pf-nums">1 of 3</span>
-                  <button class="btn btn-link" type="button" aria-label="Add item">
-                    <span class="fa fa-angle-up"></span>
-                  </button>
-                  <button class="btn btn-link" type="button" aria-label="Add item">
-                    <span class="fa fa-angle-down"></span>
-                  </button>
-                  <button class="btn btn-link btn-find-close" type="button" aria-label="Add item">
-                    <span class="pficon pficon-close"></span>
-                  </button>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="stats-card">
+          <h3>Total Users</h3>
+          <div class="stats-number">1,247</div>
+          <p>+12% from last month</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="stats-card">
+          <h3>Revenue</h3>
+          <div class="stats-number">$45.2K</div>
+          <p>+8% from last month</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="stats-card">
+          <h3>Orders</h3>
+          <div class="stats-number">892</div>
+          <p>+15% from last month</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="stats-card">
+          <h3>Conversion</h3>
+          <div class="stats-number">3.2%</div>
+          <p>+0.5% from last month</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-8">
+        <div class="stats-card">
+          <h3>Recent Activity</h3>
+          <div class="list-group list-view-pf">
+            <div class="list-group-item">
+              <div class="list-view-pf-main-info">
+                <div class="list-view-pf-left">
+                  <span class="pficon pficon-ok list-view-pf-icon-sm"></span>
+                </div>
+                <div class="list-view-pf-body">
+                  <div class="list-view-pf-description">
+                    <div class="list-group-item-heading">Order #12345 completed</div>
+                    <div class="list-group-item-text">Customer: John Smith - $234.50</div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="form-group toolbar-pf-view-selector">
-              <ul class="list-inline">
-                <li><a href="#" title="Table View" aria-label="Table View"><i class="fa fa-table"></i></a></li>
-                <li><a href="card.html" title="Card View" aria-label="Card View"><i class="fa fa-th"></i></a></li>
-                <li class="active"><a href="#" title="List View" aria-label="List View"><i class="fa fa-th-list"></i></a></li>
-              </ul>
+            <div class="list-group-item">
+              <div class="list-view-pf-main-info">
+                <div class="list-view-pf-left">
+                  <span class="pficon pficon-user list-view-pf-icon-sm"></span>
+                </div>
+                <div class="list-view-pf-body">
+                  <div class="list-view-pf-description">
+                    <div class="list-group-item-heading">New user registered</div>
+                    <div class="list-group-item-text">jane.doe@example.com</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="list-group-item">
+              <div class="list-view-pf-main-info">
+                <div class="list-view-pf-left">
+                  <span class="pficon pficon-warning-triangle-o list-view-pf-icon-sm"></span>
+                </div>
+                <div class="list-view-pf-body">
+                  <div class="list-view-pf-description">
+                    <div class="list-group-item-heading">Low stock alert</div>
+                    <div class="list-group-item-text">Product: Widget Pro - Only 5 remaining</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </form>
-        <div class="row toolbar-pf-results">
-          <div class="col-sm-12">
-            <h5>40 Results</h5>
-            <p>Active filters:</p>
-            <ul class="list-inline">
-              <li>
-                <span class="label label-info">
-                  Name: nameofthething
-                  <a href="#" aria-label="Close"><span class="pficon pficon-close"></span></a>
-                </span>
-              </li>
-              <li>
-                <span class="label label-info">
-                  Name: nameofthething
-                  <a href="#" aria-label="Close"><span class="pficon pficon-close"></span></a>
-                </span>
-              </li>
-              <li>
-                <span class="label label-info">
-                  Name: nameofthething
-                  <a href="#" aria-label="Close"><span class="pficon pficon-close"></span></a>
-                </span>
-              </li>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stats-card">
+          <h3>Quick Actions</h3>
+          <div class="list-group">
+            <a href="#" onclick="navigateTo('products'); return false;" class="list-group-item">
+              <span class="pficon pficon-bundle"></span> Browse Products
+            </a>
+            <a href="#" onclick="openModal('newOrderModal'); return false;" class="list-group-item">
+              <span class="pficon pficon-add-circle-o"></span> Create New Order
+            </a>
+            <a href="#" onclick="navigateTo('reports'); return false;" class="list-group-item">
+              <span class="pficon pficon-trend-up"></span> View Reports
+            </a>
+            <a href="#" onclick="openModal('supportModal'); return false;" class="list-group-item">
+              <span class="pficon pficon-help"></span> Contact Support
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCTS PAGE -->
+  <div id="page-products" class="page-view">
+    <div class="page-header">
+      <div class="actions pull-right">
+        <button class="btn btn-primary" onclick="openModal('newProductModal')">
+          <span class="pficon pficon-add-circle-o"></span> Add Product
+        </button>
+      </div>
+      <h1>Product Catalog</h1>
+    </div>
+
+    <div class="toolbar-pf">
+      <div class="form-group toolbar-pf-filter">
+        <label class="sr-only" for="productSearch">Search</label>
+        <div class="input-group">
+          <div class="input-group-btn">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              Category <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="#" onclick="filterProducts('all')">All Categories</a></li>
+              <li><a href="#" onclick="filterProducts('electronics')">Electronics</a></li>
+              <li><a href="#" onclick="filterProducts('clothing')">Clothing</a></li>
+              <li><a href="#" onclick="filterProducts('books')">Books</a></li>
+              <li><a href="#" onclick="filterProducts('home')">Home & Garden</a></li>
             </ul>
-            <p><a href="#">Clear All Filters</a></p>
-          </div><!-- /col -->
-        </div><!-- /row -->
-      </div><!-- /col -->
-    </div><!-- /row -->
+          </div>
+          <input type="text" class="form-control" id="productSearch" placeholder="Search products..." onkeyup="searchProducts()">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="sortBy">Sort by:</label>
+        <select class="form-control" id="sortBy" onchange="sortProducts()" style="width: 200px; display: inline-block;">
+          <option value="name">Name</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="rating">Rating</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row" id="productList">
+      <div class="col-md-3" data-category="electronics">
+        <div class="product-card">
+          <div class="product-image">💻</div>
+          <h4>Laptop Pro</h4>
+          <p>High-performance laptop for professionals</p>
+          <p><strong>$1,299.99</strong></p>
+          <p>⭐⭐⭐⭐⭐ (4.8)</p>
+          <button class="btn btn-primary btn-block" onclick="addToCart('Laptop Pro', 1299.99)">Add to Cart</button>
+        </div>
+      </div>
+      <div class="col-md-3" data-category="electronics">
+        <div class="product-card">
+          <div class="product-image">📱</div>
+          <h4>Smartphone X</h4>
+          <p>Latest model with advanced features</p>
+          <p><strong>$899.99</strong></p>
+          <p>⭐⭐⭐⭐ (4.5)</p>
+          <button class="btn btn-primary btn-block" onclick="addToCart('Smartphone X', 899.99)">Add to Cart</button>
+        </div>
+      </div>
+      <div class="col-md-3" data-category="electronics">
+        <div class="product-card">
+          <div class="product-image">🎧</div>
+          <h4>Wireless Headphones</h4>
+          <p>Noise-canceling premium audio</p>
+          <p><strong>$249.99</strong></p>
+          <p>⭐⭐⭐⭐⭐ (4.9)</p>
+          <button class="btn btn-primary btn-block" onclick="addToCart('Wireless Headphones', 249.99)">Add to Cart</button>
+        </div>
+      </div>
+      <div class="col-md-3" data-category="electronics">
+        <div class="product-card">
+          <div class="product-image">⌚</div>
+          <h4>Smart Watch</h4>
+          <p>Fitness tracking and notifications</p>
+          <p><strong>$399.99</strong></p>
+          <p>⭐⭐⭐⭐ (4.3)</p>
+          <button class="btn btn-primary btn-block" onclick="addToCart('Smart Watch', 399.99)">Add to Cart</button>
+        </div>
+      </div>
+      <div class="col-md-3" data-category="clothing">
+        <div class="product-card">
+          <div class="product-image">👕</div>
+          <h4>Premium T-Shirt</h4>
+          <p>100% organic cotton, comfortable fit</p>
+          <p><strong>$29.99</strong></p>
+          <p>⭐⭐⭐⭐ (4.2)</p>
+          <button class="btn btn-primary btn-block" onclick="addToCart('Premium T-Shirt', 29.99)">Add to Cart</button>
+        </div>
+      </div>
+      <div class="col-md-3" data-category="clothing">
+        <div class="product-card">
+          <div class="product-image">👖</div>
+          <h4>Designer Jeans</h4>
+          <p>Classic fit, premium denim</p>
+          <p><strong>$79.99</strong></p>
+          <p>⭐⭐⭐⭐⭐ (4.7)</p>
+          <button class="btn btn-primary btn-block" onclick="addToCart('Designer Jeans', 79.99)">Add to Cart</button>
+        </div>
+      </div>
+      <div class="col-md-3" data-category="books">
+        <div class="product-card">
+          <div class="product-image">📚</div>
+          <h4>JavaScript Guide</h4>
+          <p>Complete reference for modern JS</p>
+          <p><strong>$44.99</strong></p>
+          <p>⭐⭐⭐⭐⭐ (4.9)</p>
+          <button class="btn btn-primary btn-block" onclick="addToCart('JavaScript Guide', 44.99)">Add to Cart</button>
+        </div>
+      </div>
+      <div class="col-md-3" data-category="home">
+        <div class="product-card">
+          <div class="product-image">🪴</div>
+          <h4>Indoor Plant Set</h4>
+          <p>3 beautiful low-maintenance plants</p>
+          <p><strong>$34.99</strong></p>
+          <p>⭐⭐⭐⭐ (4.4)</p>
+          <button class="btn btn-primary btn-block" onclick="addToCart('Indoor Plant Set', 34.99)">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFILE PAGE -->
+  <div id="page-profile" class="page-view">
+    <div class="page-header">
+      <h1>User Profile</h1>
+    </div>
 
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-8">
+        <div class="form-section">
+          <h3>Personal Information</h3>
+          <form id="profileForm">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="firstName">First Name *</label>
+                  <input type="text" class="form-control" id="firstName" value="Albus" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="lastName">Last Name *</label>
+                  <input type="text" class="form-control" id="lastName" value="Dumbledore" required>
+                </div>
+              </div>
+            </div>
 
-        <div class="page-header page-header-bleed-right">
-          <div class="actions pull-right">
-            <a href="#"><span class="pficon pficon-refresh"></span> Refresh Results</a>
-          </div>
-          <h1>Dashboard</h1>
+            <div class="form-group">
+              <label for="email">Email Address *</label>
+              <input type="email" class="form-control" id="email" value="albus@scrumbledores.com" required>
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" class="form-control" id="phone" value="+1 (555) 123-4567">
+            </div>
+
+            <div class="form-group">
+              <label for="birthdate">Date of Birth</label>
+              <input type="date" class="form-control" id="birthdate" value="1980-07-31">
+            </div>
+
+            <div class="form-group">
+              <label for="country">Country *</label>
+              <select class="form-control" id="country" required>
+                <option value="">Select a country</option>
+                <option value="us" selected>United States</option>
+                <option value="uk">United Kingdom</option>
+                <option value="ca">Canada</option>
+                <option value="au">Australia</option>
+                <option value="de">Germany</option>
+                <option value="fr">France</option>
+                <option value="jp">Japan</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="timezone">Timezone</label>
+              <select class="form-control" id="timezone">
+                <option value="est" selected>Eastern Time (ET)</option>
+                <option value="cst">Central Time (CT)</option>
+                <option value="mst">Mountain Time (MT)</option>
+                <option value="pst">Pacific Time (PT)</option>
+                <option value="utc">UTC</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="bio">Bio</label>
+              <textarea class="form-control" id="bio" rows="4" placeholder="Tell us about yourself...">Headmaster of Hogwarts School of Witchcraft and Wizardry.</textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Account Type</label>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="accountType" value="personal" checked> Personal
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="accountType" value="business"> Business
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="accountType" value="enterprise"> Enterprise
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Interests</label>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="tech" checked> Technology
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="sports"> Sports
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="music" checked> Music
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="travel" checked> Travel
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="food"> Food & Cooking
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="profilePicture">Profile Picture</label>
+              <input type="file" class="form-control" id="profilePicture" accept="image/*">
+            </div>
+
+            <div class="form-group">
+              <label for="website">Website</label>
+              <input type="url" class="form-control" id="website" placeholder="https://example.com">
+            </div>
+
+            <div class="form-group">
+              <label for="experienceLevel">Experience Level</label>
+              <input type="range" class="form-control" id="experienceLevel" min="0" max="10" value="7">
+              <small>Beginner 0 ━━━━━ 10 Expert</small>
+            </div>
+
+            <hr>
+
+            <button type="submit" class="btn btn-primary" onclick="saveProfile(event)">
+              <span class="pficon pficon-save"></span> Save Changes
+            </button>
+            <button type="button" class="btn btn-default" onclick="navigateTo('dashboard')">Cancel</button>
+          </form>
         </div>
       </div>
 
-      <div class="list-group list-view-pf">
-
-        <div data-link="details.html" class="list-group-item">
-          <a href="details.html" class="list-group-item-link" aria-label="Link to details"></a>
-          <div class="list-view-pf-checkbox">
-            <input type="checkbox">
-          </div>
-          <div class="list-view-pf-actions">
-            <button class="btn btn-default" type="button">Action</button>
-            <div class="dropdown pull-right dropdown-kebab-pf">
-              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" aria-label="Add item">
-                <span class="fa fa-ellipsis-v"></span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight1">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li><a href="#">Separated link</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="list-view-pf-main-info">
-            <div class="list-view-pf-left">
-              <span class="fa fa-plane list-view-pf-icon-sm"></span>
-            </div>
-            <div class="list-view-pf-body">
-              <div class="list-view-pf-description">
-                <div class="list-group-item-heading">
-                  Event One
-                </div>
-                <div class="list-group-item-text">
-                  The following snippet of text is <a href="#">rendered as link text</a>.
-                </div>
-              </div>
-              <div class="list-view-pf-additional-info">
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-screen"></span>
-                  <strong>8</strong> Hosts
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-cluster"></span>
-                  <strong>8</strong> Clusters
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-container-node"></span>
-                  <strong>18</strong> Nodes
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-image"></span>
-                  <strong>4</strong> Images
-                </div>
-              </div>
-            </div>
-          </div>
-        </div><!-- list-group-item -->
-
-        <div data-link="details.html" class="list-group-item">
-          <div class="list-view-pf-checkbox">
-            <input type="checkbox">
-          </div>
-          <div class="list-view-pf-actions">
-            <button class="btn btn-default" type="button">Action</button>
-            <div class="dropdown pull-right dropdown-kebab-pf">
-              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" aria-label="Add item">
-                <span class="fa fa-ellipsis-v"></span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight2">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li><a href="#">Separated link</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="list-view-pf-main-info">
-            <div class="list-view-pf-left">
-              <span class="fa fa-plane list-view-pf-icon-sm"></span>
-            </div>
-            <div class="list-view-pf-body">
-              <div class="list-view-pf-description">
-                <div class="list-group-item-heading">
-                  Event One
-                </div>
-                <div class="list-group-item-text">
-                  The following snippet of text is <a href="#">rendered as link text</a>.
-                </div>
-              </div>
-              <div class="list-view-pf-additional-info">
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-screen"></span>
-                  <strong>8</strong> Hosts
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-cluster"></span>
-                  <strong>8</strong> Clusters
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-container-node"></span>
-                  <strong>18</strong> Nodes
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-image"></span>
-                  <strong>4</strong> Images
-                </div>
-              </div>
-            </div>
-          </div>
-        </div><!-- list-group-item -->
-
-        <div data-link="details.html" class="list-group-item">
-          <div class="list-view-pf-checkbox">
-            <input type="checkbox">
-          </div>
-          <div class="list-view-pf-actions">
-            <button class="btn btn-default" type="button">Action</button>
-            <div class="dropdown pull-right dropdown-kebab-pf">
-              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" aria-label="Add item">
-                <span class="fa fa-ellipsis-v"></span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight3">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li><a href="#">Separated link</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="list-view-pf-main-info">
-            <div class="list-view-pf-left">
-              <span class="fa fa-plane list-view-pf-icon-sm"></span>
-            </div>
-            <div class="list-view-pf-body">
-              <div class="list-view-pf-description">
-                <div class="list-group-item-heading">
-                  Event One
-                </div>
-                <div class="list-group-item-text">
-                  The following snippet of text is <a href="#">rendered as link text</a>.
-                </div>
-              </div>
-              <div class="list-view-pf-additional-info">
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-screen"></span>
-                  <strong>8</strong> Hosts
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-cluster"></span>
-                  <strong>8</strong> Clusters
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-container-node"></span>
-                  <strong>18</strong> Nodes
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-image"></span>
-                  <strong>4</strong> Images
-                </div>
-              </div>
-            </div>
-          </div>
-        </div><!-- list-group-item -->
-
-        <div data-link="details.html" class="list-group-item">
-          <div class="list-view-pf-checkbox">
-            <input type="checkbox">
-          </div>
-          <div class="list-view-pf-actions">
-            <button class="btn btn-default" type="button">Action</button>
-            <div class="dropdown pull-right dropdown-kebab-pf">
-              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" aria-label="Add item">
-                <span class="fa fa-ellipsis-v"></span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight4">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li><a href="#">Separated link</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="list-view-pf-main-info">
-            <div class="list-view-pf-left">
-              <span class="fa fa-plane list-view-pf-icon-sm"></span>
-            </div>
-            <div class="list-view-pf-body">
-              <div class="list-view-pf-description">
-                <div class="list-group-item-heading">
-                  Event One
-                </div>
-                <div class="list-group-item-text">
-                  The following snippet of text is <a href="#">rendered as link text</a>.
-                </div>
-              </div>
-              <div class="list-view-pf-additional-info">
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-screen"></span>
-                  <strong>8</strong> Hosts
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-cluster"></span>
-                  <strong>8</strong> Clusters
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-container-node"></span>
-                  <strong>18</strong> Nodes
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-image"></span>
-                  <strong>4</strong> Images
-                </div>
-              </div>
-            </div>
-          </div>
-        </div><!-- list-group-item -->
-
-        <div data-link="details.html" class="list-group-item">
-          <div class="list-view-pf-checkbox">
-            <input type="checkbox">
-          </div>
-          <div class="list-view-pf-actions">
-            <button class="btn btn-default" type="button">Action</button>
-            <div class="dropdown pull-right dropdown-kebab-pf">
-              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" aria-label="Add item">
-                <span class="fa fa-ellipsis-v"></span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight5">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li><a href="#">Separated link</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="list-view-pf-main-info">
-            <div class="list-view-pf-left">
-              <span class="fa fa-plane list-view-pf-icon-sm"></span>
-            </div>
-            <div class="list-view-pf-body">
-              <div class="list-view-pf-description">
-                <div class="list-group-item-heading">
-                  Event One
-                </div>
-                <div class="list-group-item-text">
-                  The following snippet of text is <a href="#">rendered as link text</a>.
-                </div>
-              </div>
-              <div class="list-view-pf-additional-info">
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-screen"></span>
-                  <strong>8</strong> Hosts
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-cluster"></span>
-                  <strong>8</strong> Clusters
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-container-node"></span>
-                  <strong>18</strong> Nodes
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-image"></span>
-                  <strong>4</strong> Images
-                </div>
-              </div>
-            </div>
-          </div>
-        </div><!-- list-group-item -->
-
-        <div data-link="details.html" class="list-group-item">
-          <div class="list-view-pf-checkbox">
-            <input type="checkbox">
-          </div>
-          <div class="list-view-pf-actions">
-            <button class="btn btn-default" type="button">Action</button>
-            <div class="dropdown pull-right dropdown-kebab-pf">
-              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" aria-label="Add item">
-                <span class="fa fa-ellipsis-v"></span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight6">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li><a href="#">Separated link</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="list-view-pf-main-info">
-            <div class="list-view-pf-left">
-              <span class="fa fa-plane list-view-pf-icon-sm"></span>
-            </div>
-            <div class="list-view-pf-body">
-              <div class="list-view-pf-description">
-                <div class="list-group-item-heading">
-                  Event One
-                </div>
-                <div class="list-group-item-text">
-                  The following snippet of text is <a href="#">rendered as link text</a>.
-                </div>
-              </div>
-              <div class="list-view-pf-additional-info">
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-screen"></span>
-                  <strong>8</strong> Hosts
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-cluster"></span>
-                  <strong>8</strong> Clusters
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-container-node"></span>
-                  <strong>18</strong> Nodes
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-image"></span>
-                  <strong>4</strong> Images
-                </div>
-              </div>
-            </div>
-          </div>
-        </div><!-- list-group-item -->
-
-        <div data-link="details.html" class="list-group-item">
-          <div class="list-view-pf-checkbox">
-            <input type="checkbox">
-          </div>
-          <div class="list-view-pf-actions">
-            <button class="btn btn-default" type="button">Action</button>
-            <div class="dropdown pull-right dropdown-kebab-pf">
-              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight7" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" aria-label="Add item">
-                <span class="fa fa-ellipsis-v"></span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight7">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li><a href="#">Separated link</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="list-view-pf-main-info">
-            <div class="list-view-pf-left">
-              <span class="fa fa-plane list-view-pf-icon-sm"></span>
-            </div>
-            <div class="list-view-pf-body">
-              <div class="list-view-pf-description">
-                <div class="list-group-item-heading">
-                  Event One
-                </div>
-                <div class="list-group-item-text">
-                  The following snippet of text is <a href="#">rendered as link text</a>.
-                </div>
-              </div>
-              <div class="list-view-pf-additional-info">
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-screen"></span>
-                  <strong>8</strong> Hosts
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-cluster"></span>
-                  <strong>8</strong> Clusters
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-container-node"></span>
-                  <strong>18</strong> Nodes
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-image"></span>
-                  <strong>4</strong> Images
-                </div>
-              </div>
-            </div>
-          </div>
-        </div><!-- list-group-item -->
-
-        <div data-link="details.html" class="list-group-item">
-          <div class="list-view-pf-checkbox">
-            <input type="checkbox">
-          </div>
-          <div class="list-view-pf-actions">
-            <button class="btn btn-default" type="button">Action</button>
-            <div class="dropdown pull-right dropdown-kebab-pf">
-              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight8" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" aria-label="Add item">
-                <span class="fa fa-ellipsis-v"></span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight8">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li><a href="#">Separated link</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="list-view-pf-main-info">
-            <div class="list-view-pf-left">
-              <span class="fa fa-plane list-view-pf-icon-sm"></span>
-            </div>
-            <div class="list-view-pf-body">
-              <div class="list-view-pf-description">
-                <div class="list-group-item-heading">
-                  Event One
-                </div>
-                <div class="list-group-item-text">
-                  The following snippet of text is <a href="#">rendered as link text</a>.
-                </div>
-              </div>
-              <div class="list-view-pf-additional-info">
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-screen"></span>
-                  <strong>8</strong> Hosts
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-cluster"></span>
-                  <strong>8</strong> Clusters
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-container-node"></span>
-                  <strong>18</strong> Nodes
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-image"></span>
-                  <strong>4</strong> Images
-                </div>
-              </div>
-            </div>
-          </div>
-        </div><!-- list-group-item -->
-
-        <div data-link="details.html" class="list-group-item">
-          <div class="list-view-pf-checkbox">
-            <input type="checkbox">
-          </div>
-          <div class="list-view-pf-actions">
-            <button class="btn btn-default" type="button">Action</button>
-            <div class="dropdown pull-right dropdown-kebab-pf">
-              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight9" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" aria-label="Add item">
-                <span class="fa fa-ellipsis-v"></span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight9">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li><a href="#">Separated link</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="list-view-pf-main-info">
-            <div class="list-view-pf-left">
-              <span class="fa fa-plane list-view-pf-icon-sm"></span>
-            </div>
-            <div class="list-view-pf-body">
-              <div class="list-view-pf-description">
-                <div class="list-group-item-heading">
-                  Event One
-                </div>
-                <div class="list-group-item-text">
-                  The following snippet of text is <a href="#">rendered as link text</a>.
-                </div>
-              </div>
-              <div class="list-view-pf-additional-info">
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-screen"></span>
-                  <strong>8</strong> Hosts
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-cluster"></span>
-                  <strong>8</strong> Clusters
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-container-node"></span>
-                  <strong>18</strong> Nodes
-                </div>
-                <div class="list-view-pf-additional-info-item">
-                  <span class="pficon pficon-image"></span>
-                  <strong>4</strong> Images
-                </div>
-              </div>
-            </div>
-          </div>
-        </div><!-- list-group-item -->
+      <div class="col-md-4">
+        <div class="form-section">
+          <h3>Profile Stats</h3>
+          <p><strong>Member Since:</strong> January 2020</p>
+          <p><strong>Total Orders:</strong> 42</p>
+          <p><strong>Points:</strong> 1,847</p>
+          <p><strong>Status:</strong> <span class="label label-success">Premium</span></p>
+          <hr>
+          <button class="btn btn-default btn-block" onclick="openModal('changePasswordModal')">Change Password</button>
+          <button class="btn btn-default btn-block" onclick="openModal('deleteAccountModal')">Delete Account</button>
+        </div>
       </div>
     </div>
+  </div>
+
+  <!-- CART & CHECKOUT PAGE -->
+  <div id="page-cart" class="page-view">
+    <div class="page-header">
+      <h1>Shopping Cart</h1>
+    </div>
+
+    <div class="row">
+      <div class="col-md-8">
+        <div class="form-section">
+          <h3>Cart Items</h3>
+          <div id="cartItems">
+            <p>Your cart is empty. <a href="#" onclick="navigateTo('products')">Browse products</a></p>
+          </div>
+        </div>
+
+        <div class="form-section" id="checkoutSection" style="display: none;">
+          <h3>Checkout Information</h3>
+          <form id="checkoutForm">
+            <h4>Shipping Address</h4>
+            <div class="form-group">
+              <label for="shippingName">Full Name *</label>
+              <input type="text" class="form-control" id="shippingName" required>
+            </div>
+
+            <div class="form-group">
+              <label for="shippingAddress">Street Address *</label>
+              <input type="text" class="form-control" id="shippingAddress" required>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="shippingCity">City *</label>
+                  <input type="text" class="form-control" id="shippingCity" required>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="shippingState">State *</label>
+                  <select class="form-control" id="shippingState" required>
+                    <option value="">Select</option>
+                    <option value="AL">Alabama</option>
+                    <option value="CA">California</option>
+                    <option value="NY">New York</option>
+                    <option value="TX">Texas</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="shippingZip">ZIP Code *</label>
+                  <input type="text" class="form-control" id="shippingZip" pattern="[0-9]{5}" required>
+                </div>
+              </div>
+            </div>
+
+            <hr>
+
+            <h4>Payment Information</h4>
+            <div class="form-group">
+              <label for="cardNumber">Card Number *</label>
+              <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456" pattern="[0-9 ]{13,19}" required>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="expiryMonth">Expiry Month *</label>
+                  <select class="form-control" id="expiryMonth" required>
+                    <option value="">Month</option>
+                    <option value="01">01</option>
+                    <option value="02">02</option>
+                    <option value="03">03</option>
+                    <option value="04">04</option>
+                    <option value="05">05</option>
+                    <option value="06">06</option>
+                    <option value="07">07</option>
+                    <option value="08">08</option>
+                    <option value="09">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="expiryYear">Expiry Year *</label>
+                  <select class="form-control" id="expiryYear" required>
+                    <option value="">Year</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                    <option value="2026">2026</option>
+                    <option value="2027">2027</option>
+                    <option value="2028">2028</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="cvv">CVV *</label>
+                  <input type="text" class="form-control" id="cvv" placeholder="123" pattern="[0-9]{3,4}" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="savePayment"> Save payment information for future orders
+              </label>
+            </div>
+
+            <hr>
+
+            <button type="submit" class="btn btn-success btn-lg" onclick="processCheckout(event)">
+              <span class="pficon pficon-ok"></span> Place Order
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-section">
+          <h3>Order Summary</h3>
+          <div id="orderSummary">
+            <p>Subtotal: $<span id="subtotal">0.00</span></p>
+            <p>Shipping: $<span id="shipping">0.00</span></p>
+            <p>Tax: $<span id="tax">0.00</span></p>
+            <hr>
+            <h4>Total: $<span id="total">0.00</span></h4>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Promo Code</h3>
+          <div class="input-group">
+            <input type="text" class="form-control" id="promoCode" placeholder="Enter code">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button" onclick="applyPromo()">Apply</button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REPORTS PAGE -->
+  <div id="page-reports" class="page-view">
+    <div class="page-header">
+      <div class="actions pull-right">
+        <div class="dropdown" style="display: inline-block;">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+            Export <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li><a href="#" onclick="exportReport('pdf')">PDF</a></li>
+            <li><a href="#" onclick="exportReport('excel')">Excel</a></li>
+            <li><a href="#" onclick="exportReport('csv')">CSV</a></li>
+          </ul>
+        </div>
+      </div>
+      <h1>Sales Reports</h1>
+    </div>
+
+    <div class="toolbar-pf">
+      <div class="form-group">
+        <label for="reportPeriod">Period:</label>
+        <select class="form-control" id="reportPeriod" onchange="updateReport()" style="width: 200px; display: inline-block;">
+          <option value="today">Today</option>
+          <option value="week" selected>Last 7 Days</option>
+          <option value="month">Last 30 Days</option>
+          <option value="quarter">Last Quarter</option>
+          <option value="year">Last Year</option>
+          <option value="custom">Custom Range</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="reportType">Report Type:</label>
+        <select class="form-control" id="reportType" onchange="updateReport()" style="width: 200px; display: inline-block;">
+          <option value="sales">Sales Overview</option>
+          <option value="products">Product Performance</option>
+          <option value="customers">Customer Analytics</option>
+          <option value="revenue">Revenue Breakdown</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>Data Table</h3>
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th class="sortable" onclick="sortTable(0)">Order ID <span class="fa fa-sort"></span></th>
+            <th class="sortable" onclick="sortTable(1)">Customer <span class="fa fa-sort"></span></th>
+            <th class="sortable" onclick="sortTable(2)">Product <span class="fa fa-sort"></span></th>
+            <th class="sortable" onclick="sortTable(3)">Amount <span class="fa fa-sort"></span></th>
+            <th class="sortable" onclick="sortTable(4)">Date <span class="fa fa-sort"></span></th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="reportTable">
+          <tr>
+            <td>#10245</td>
+            <td>John Smith</td>
+            <td>Laptop Pro</td>
+            <td>$1,299.99</td>
+            <td>2024-01-15</td>
+            <td><span class="label label-success">Completed</span></td>
+            <td><button class="btn btn-xs btn-default" onclick="openModal('orderDetailModal')">View</button></td>
+          </tr>
+          <tr>
+            <td>#10244</td>
+            <td>Jane Doe</td>
+            <td>Smartphone X</td>
+            <td>$899.99</td>
+            <td>2024-01-14</td>
+            <td><span class="label label-info">Shipped</span></td>
+            <td><button class="btn btn-xs btn-default" onclick="openModal('orderDetailModal')">View</button></td>
+          </tr>
+          <tr>
+            <td>#10243</td>
+            <td>Bob Johnson</td>
+            <td>Wireless Headphones</td>
+            <td>$249.99</td>
+            <td>2024-01-14</td>
+            <td><span class="label label-success">Completed</span></td>
+            <td><button class="btn btn-xs btn-default" onclick="openModal('orderDetailModal')">View</button></td>
+          </tr>
+          <tr>
+            <td>#10242</td>
+            <td>Alice Williams</td>
+            <td>Smart Watch</td>
+            <td>$399.99</td>
+            <td>2024-01-13</td>
+            <td><span class="label label-warning">Processing</span></td>
+            <td><button class="btn btn-xs btn-default" onclick="openModal('orderDetailModal')">View</button></td>
+          </tr>
+          <tr>
+            <td>#10241</td>
+            <td>Charlie Brown</td>
+            <td>Designer Jeans</td>
+            <td>$79.99</td>
+            <td>2024-01-13</td>
+            <td><span class="label label-success">Completed</span></td>
+            <td><button class="btn btn-xs btn-default" onclick="openModal('orderDetailModal')">View</button></td>
+          </tr>
+          <tr>
+            <td>#10240</td>
+            <td>Diana Prince</td>
+            <td>JavaScript Guide</td>
+            <td>$44.99</td>
+            <td>2024-01-12</td>
+            <td><span class="label label-danger">Cancelled</span></td>
+            <td><button class="btn btn-xs btn-default" onclick="openModal('orderDetailModal')">View</button></td>
+          </tr>
+          <tr>
+            <td>#10239</td>
+            <td>Eve Adams</td>
+            <td>Indoor Plant Set</td>
+            <td>$34.99</td>
+            <td>2024-01-12</td>
+            <td><span class="label label-success">Completed</span></td>
+            <td><button class="btn btn-xs btn-default" onclick="openModal('orderDetailModal')">View</button></td>
+          </tr>
+          <tr>
+            <td>#10238</td>
+            <td>Frank Miller</td>
+            <td>Premium T-Shirt</td>
+            <td>$29.99</td>
+            <td>2024-01-11</td>
+            <td><span class="label label-success">Completed</span></td>
+            <td><button class="btn btn-xs btn-default" onclick="openModal('orderDetailModal')">View</button></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="text-center">
+        <ul class="pagination">
+          <li><a href="#">«</a></li>
+          <li class="active"><a href="#">1</a></li>
+          <li><a href="#">2</a></li>
+          <li><a href="#">3</a></li>
+          <li><a href="#">4</a></li>
+          <li><a href="#">5</a></li>
+          <li><a href="#">»</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS PAGE -->
+  <div id="page-settings" class="page-view">
+    <div class="page-header">
+      <h1>Settings</h1>
+    </div>
+
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#" onclick="switchTab('general')">General</a></li>
+      <li><a href="#" onclick="switchTab('notifications')">Notifications</a></li>
+      <li><a href="#" onclick="switchTab('privacy')">Privacy</a></li>
+      <li><a href="#" onclick="switchTab('billing')">Billing</a></li>
+      <li><a href="#" onclick="switchTab('advanced')">Advanced</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div id="tab-general" class="settings-tab active">
+        <h3>General Settings</h3>
+
+        <div class="form-group">
+          <label for="language">Language</label>
+          <select class="form-control" id="language" style="max-width: 300px;">
+            <option value="en" selected>English</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="ja">日本語</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="currency">Currency</label>
+          <select class="form-control" id="currency" style="max-width: 300px;">
+            <option value="usd" selected>USD - US Dollar</option>
+            <option value="eur">EUR - Euro</option>
+            <option value="gbp">GBP - British Pound</option>
+            <option value="jpy">JPY - Japanese Yen</option>
+          </select>
+        </div>
+
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" checked> Enable dark mode
+          </label>
+        </div>
+
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" checked> Show tooltips
+          </label>
+        </div>
+
+        <div class="checkbox">
+          <label>
+            <input type="checkbox"> Compact view
+          </label>
+        </div>
+
+        <hr>
+        <button class="btn btn-primary" onclick="showNotification('Settings saved successfully!')">Save Changes</button>
+      </div>
+
+      <div id="tab-notifications" class="settings-tab" style="display: none;">
+        <h3>Notification Preferences</h3>
+
+        <h4>Email Notifications</h4>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" checked> Order confirmations
+          </label>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" checked> Shipping updates
+          </label>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox"> Marketing emails
+          </label>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" checked> Security alerts
+          </label>
+        </div>
+
+        <hr>
+
+        <h4>Push Notifications</h4>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" checked> New messages
+          </label>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox"> Promotions
+          </label>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" checked> Account activity
+          </label>
+        </div>
+
+        <hr>
+        <button class="btn btn-primary" onclick="showNotification('Notification settings updated!')">Save Changes</button>
+      </div>
+
+      <div id="tab-privacy" class="settings-tab" style="display: none;">
+        <h3>Privacy Settings</h3>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion('acc1')">
+            <strong>Data Collection</strong>
+            <span class="fa fa-chevron-down pull-right"></span>
+          </div>
+          <div id="acc1" class="accordion-content">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" checked> Allow usage analytics
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" checked> Personalized recommendations
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox"> Share data with partners
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion('acc2')">
+            <strong>Profile Visibility</strong>
+            <span class="fa fa-chevron-down pull-right"></span>
+          </div>
+          <div id="acc2" class="accordion-content">
+            <div class="radio">
+              <label>
+                <input type="radio" name="visibility" value="public" checked> Public
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" name="visibility" value="friends"> Friends Only
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" name="visibility" value="private"> Private
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion('acc3')">
+            <strong>Cookie Preferences</strong>
+            <span class="fa fa-chevron-down pull-right"></span>
+          </div>
+          <div id="acc3" class="accordion-content">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" checked disabled> Essential cookies (required)
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" checked> Functional cookies
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox"> Marketing cookies
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+        <button class="btn btn-primary" onclick="showNotification('Privacy settings updated!')">Save Changes</button>
+      </div>
+
+      <div id="tab-billing" class="settings-tab" style="display: none;">
+        <h3>Billing Information</h3>
+
+        <h4>Current Plan</h4>
+        <div class="well">
+          <h4>Premium Plan - $29.99/month</h4>
+          <p>Next billing date: February 15, 2024</p>
+          <button class="btn btn-default">Upgrade Plan</button>
+          <button class="btn btn-default">Cancel Subscription</button>
+        </div>
+
+        <h4>Payment Methods</h4>
+        <div class="list-group">
+          <div class="list-group-item">
+            <strong>Visa ending in 4242</strong>
+            <span class="pull-right">
+              <button class="btn btn-xs btn-default">Edit</button>
+              <button class="btn btn-xs btn-danger">Remove</button>
+            </span>
+            <br>
+            <small>Expires 12/2025</small>
+          </div>
+        </div>
+        <button class="btn btn-default">Add Payment Method</button>
+
+        <hr>
+
+        <h4>Billing History</h4>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Description</th>
+              <th>Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Jan 15, 2024</td>
+              <td>Premium Plan - Monthly</td>
+              <td>$29.99</td>
+              <td><span class="label label-success">Paid</span></td>
+            </tr>
+            <tr>
+              <td>Dec 15, 2023</td>
+              <td>Premium Plan - Monthly</td>
+              <td>$29.99</td>
+              <td><span class="label label-success">Paid</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="tab-advanced" class="settings-tab" style="display: none;">
+        <h3>Advanced Settings</h3>
+
+        <div class="form-group">
+          <label for="apiKey">API Key</label>
+          <div class="input-group">
+            <input type="text" class="form-control" id="apiKey" value="sk_live_abc123xyz789" readonly>
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button" onclick="regenerateApiKey()">Regenerate</button>
+            </span>
+          </div>
+        </div>
+
+        <div class="checkbox">
+          <label>
+            <input type="checkbox"> Enable two-factor authentication
+          </label>
+        </div>
+
+        <div class="checkbox">
+          <label>
+            <input type="checkbox"> Enable API access
+          </label>
+        </div>
+
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" checked> Session timeout after 30 minutes
+          </label>
+        </div>
+
+        <hr>
+
+        <h4>Danger Zone</h4>
+        <div class="well" style="background-color: #fff3f3; border-color: #cc0000;">
+          <button class="btn btn-danger" onclick="openModal('deleteAccountModal')">Delete Account</button>
+          <p class="text-danger"><small>This action cannot be undone</small></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div><!-- container -->
+
+<!-- MODALS -->
+
+<!-- Help Modal -->
+<div class="modal fade" id="helpModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Help & Support</h4>
+      </div>
+      <div class="modal-body">
+        <h4>How can we help you?</h4>
+        <div class="form-group">
+          <label for="helpCategory">Select a category</label>
+          <select class="form-control" id="helpCategory">
+            <option>Account & Billing</option>
+            <option>Orders & Shipping</option>
+            <option>Technical Issues</option>
+            <option>Returns & Refunds</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="helpMessage">Describe your issue</label>
+          <textarea class="form-control" id="helpMessage" rows="5"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="submitHelp()">Submit Request</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- New Product Modal -->
+<div class="modal fade" id="newProductModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add New Product</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label>Product Name</label>
+            <input type="text" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <select class="form-control">
+              <option>Electronics</option>
+              <option>Clothing</option>
+              <option>Books</option>
+              <option>Home & Garden</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Price</label>
+            <input type="number" class="form-control" step="0.01">
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control" rows="3"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="addProduct()">Add Product</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Change Password Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Change Password</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label>Current Password</label>
+            <input type="password" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>New Password</label>
+            <input type="password" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Confirm New Password</label>
+            <input type="password" class="form-control">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="changePassword()">Update Password</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Account Modal -->
+<div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Delete Account</h4>
+      </div>
+      <div class="modal-body">
+        <p class="text-danger"><strong>Warning:</strong> This action cannot be undone.</p>
+        <p>All your data will be permanently deleted.</p>
+        <div class="form-group">
+          <label>Type "DELETE" to confirm:</label>
+          <input type="text" class="form-control" id="deleteConfirm">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" onclick="deleteAccount()">Delete My Account</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
-  // Row Checkbox Selection
-  $(document).ready(function () {
-    $("input[type='checkbox']").change(function (e) {
-      if ($(this).is(":checked")) {
-        $(this).closest('.list-group-item').addClass("active");
+  // Simple SPA Router
+  const cart = [];
+
+  function navigateTo(page) {
+    // Hide all pages
+    document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+
+    // Show selected page
+    document.getElementById('page-' + page).classList.add('active');
+
+    // Update navigation active state
+    document.querySelectorAll('.navbar-primary li').forEach(li => li.classList.remove('active'));
+    const navItem = document.querySelector('.nav-item-' + page);
+    if (navItem) navItem.classList.add('active');
+
+    // Trigger Pendo page load
+    if (typeof pendo !== 'undefined') {
+      pendo.pageLoad();
+    }
+  }
+
+  function openModal(modalId) {
+    $('#' + modalId).modal('show');
+  }
+
+  function showNotification(message) {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.classList.add('show');
+
+    setTimeout(() => {
+      notification.classList.remove('show');
+    }, 3000);
+  }
+
+  // Shopping Cart Functions
+  function addToCart(productName, price) {
+    cart.push({ name: productName, price: price });
+    updateCartBadge();
+    updateCartDisplay();
+    showNotification(productName + ' added to cart!');
+  }
+
+  function updateCartBadge() {
+    document.getElementById('cartBadge').textContent = cart.length;
+  }
+
+  function updateCartDisplay() {
+    const cartItems = document.getElementById('cartItems');
+    const checkoutSection = document.getElementById('checkoutSection');
+
+    if (cart.length === 0) {
+      cartItems.innerHTML = '<p>Your cart is empty. <a href="#" onclick="navigateTo(\'products\')">Browse products</a></p>';
+      checkoutSection.style.display = 'none';
+    } else {
+      let html = '';
+      let subtotal = 0;
+
+      cart.forEach((item, index) => {
+        subtotal += item.price;
+        html += `
+          <div class="cart-item">
+            <div class="row">
+              <div class="col-md-6">
+                <h4>${item.name}</h4>
+              </div>
+              <div class="col-md-3">
+                <p><strong>$${item.price.toFixed(2)}</strong></p>
+              </div>
+              <div class="col-md-3">
+                <button class="btn btn-danger btn-sm" onclick="removeFromCart(${index})">Remove</button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      cartItems.innerHTML = html;
+      checkoutSection.style.display = 'block';
+
+      // Update order summary
+      const shipping = subtotal > 50 ? 0 : 9.99;
+      const tax = subtotal * 0.08;
+      const total = subtotal + shipping + tax;
+
+      document.getElementById('subtotal').textContent = subtotal.toFixed(2);
+      document.getElementById('shipping').textContent = shipping.toFixed(2);
+      document.getElementById('tax').textContent = tax.toFixed(2);
+      document.getElementById('total').textContent = total.toFixed(2);
+    }
+  }
+
+  function removeFromCart(index) {
+    cart.splice(index, 1);
+    updateCartBadge();
+    updateCartDisplay();
+    showNotification('Item removed from cart');
+  }
+
+  function applyPromo() {
+    const promoCode = document.getElementById('promoCode').value;
+    if (promoCode.toUpperCase() === 'SAVE10') {
+      showNotification('Promo code applied! 10% discount');
+    } else {
+      showNotification('Invalid promo code');
+    }
+  }
+
+  function processCheckout(event) {
+    event.preventDefault();
+    showNotification('Order placed successfully! Order #' + Math.floor(Math.random() * 10000));
+    cart.length = 0;
+    updateCartBadge();
+    setTimeout(() => navigateTo('dashboard'), 2000);
+  }
+
+  // Product Functions
+  function searchProducts() {
+    const searchTerm = document.getElementById('productSearch').value.toLowerCase();
+    const products = document.querySelectorAll('.product-card');
+
+    products.forEach(product => {
+      const text = product.textContent.toLowerCase();
+      if (text.includes(searchTerm)) {
+        product.parentElement.style.display = 'block';
       } else {
-        $(this).closest('.list-group-item').removeClass("active");
+        product.parentElement.style.display = 'none';
       }
     });
+  }
 
-    // Row navigation to contents/details page
-    $(".list-group-item").click(function(e){
-      var target = e.target;
-      //check if clicked element is a div, and not <a>, button or input
-      if($(target).is('div')) {
-        window.location = $(this).data("link");
+  function filterProducts(category) {
+    const products = document.querySelectorAll('#productList > div');
+
+    products.forEach(product => {
+      if (category === 'all' || product.dataset.category === category) {
+        product.style.display = 'block';
+      } else {
+        product.style.display = 'none';
       }
     });
+  }
 
+  function sortProducts() {
+    showNotification('Products sorted');
+  }
 
+  function addProduct() {
+    showNotification('Product added successfully!');
+    $('#newProductModal').modal('hide');
+  }
+
+  // Profile Functions
+  function saveProfile(event) {
+    event.preventDefault();
+    showNotification('Profile updated successfully!');
+  }
+
+  function changePassword() {
+    showNotification('Password changed successfully!');
+    $('#changePasswordModal').modal('hide');
+  }
+
+  function deleteAccount() {
+    const confirm = document.getElementById('deleteConfirm').value;
+    if (confirm === 'DELETE') {
+      showNotification('Account deletion initiated');
+      $('#deleteAccountModal').modal('hide');
+    } else {
+      showNotification('Please type DELETE to confirm');
+    }
+  }
+
+  // Settings Functions
+  function switchTab(tabName) {
+    // Update tab active state
+    document.querySelectorAll('.nav-tabs li').forEach(li => li.classList.remove('active'));
+    event.target.parentElement.classList.add('active');
+
+    // Hide all tab content
+    document.querySelectorAll('.settings-tab').forEach(tab => tab.style.display = 'none');
+
+    // Show selected tab
+    document.getElementById('tab-' + tabName).style.display = 'block';
+  }
+
+  function toggleAccordion(id) {
+    const content = document.getElementById(id);
+    content.classList.toggle('active');
+  }
+
+  function regenerateApiKey() {
+    const newKey = 'sk_live_' + Math.random().toString(36).substring(2, 15);
+    document.getElementById('apiKey').value = newKey;
+    showNotification('API key regenerated');
+  }
+
+  // Report Functions
+  function updateReport() {
+    showNotification('Report updated');
+  }
+
+  function exportReport(format) {
+    showNotification('Exporting report as ' + format.toUpperCase());
+  }
+
+  function sortTable(column) {
+    showNotification('Table sorted by column ' + column);
+  }
+
+  // Help Functions
+  function submitHelp() {
+    showNotification('Support request submitted');
+    $('#helpModal').modal('hide');
+  }
+
+  // Initialize
+  $(document).ready(function() {
+    updateCartBadge();
   });
 </script>
-<!-- run local agent -->
-<!-- <script>
-(function(apiKey){
-    (function(p,e,n,d,o){var v,w,x,y,z;o=p[d]=p[d]||{};o._q=o._q||[];
-    v=['initialize','identify','updateOptions','pageLoad','track'];for(w=0,x=v.length;w<x;++w)(function(m){
-        o[m]=o[m]||function(){o._q[m===v[0]?'unshift':'push']([m].concat([].slice.call(arguments,0)));};})(v[w]);
-        y=e.createElement(n);y.async=!0;y.src='https://local.pendo.io:8081/dist/pendo.jsonp.js';
-        z=e.getElementsByTagName(n)[0];z.parentNode.insertBefore(y,z);})(window,document,'script','pendo');
 
-        // This function creates anonymous visitor IDs in Pendo unless you change the visitor id field to use your app's values
-        // This function uses the placeholder 'ACCOUNT-UNIQUE-ID' value for account ID unless you change the account id field to use your app's values
-        // Call this function after users are authenticated in your app and your visitor and account id values are available
-        // Please use Strings, Numbers, or Bools for value types.
-        pendo.initialize({
-            apiKey: '8359b8c1-4fd4-4b5e-5ff6-87154498e673',
-            visitor: {
-                id:              'RAANAN_AVIDOR',   // Required if user is logged in, default creates anonymous ID
-                email:            'ravidor@gmail.com' // Recommended if using Pendo Feedback, or NPS Email
-                // full_name:    // Recommended if using Pendo Feedback
-                // role:         // Optional
-
-                // You can add any additional visitor level key-values here,
-                // as long as it's not one of the above reserved names.
-            },
-
-            account: {
-                id:           'ACME' // Required if using Pendo Feedback, default uses the value 'ACCOUNT-UNIQUE-ID'
-                // name:         // Optional
-                // is_paying:    // Recommended if using Pendo Feedback
-                // monthly_value:// Recommended if using Pendo Feedback
-                // planLevel:    // Optional
-                // planPrice:    // Optional
-                // creationDate: // Optional
-
-                // You can add any additional account level key-values here,
-                // as long as it's not one of the above reserved names.
-            }
-        });
-})();
-</script> -->
 <!-- pendo-mobile-guides env, Raanan Avidor sub, web app -->
 <script>
 (function(apiKey){
@@ -786,32 +1597,14 @@
         y=e.createElement(n);y.async=!0;y.src='https://cdn.pendo-mobile-guides.pendo-dev.com/agent/static/'+apiKey+'/pendo.js';
         z=e.getElementsByTagName(n)[0];z.parentNode.insertBefore(y,z);})(window,document,'script','pendo');
 
-        // This function creates anonymous visitor IDs in Pendo unless you change the visitor id field to use your app's values
-        // This function uses the placeholder 'ACCOUNT-UNIQUE-ID' value for account ID unless you change the account id field to use your app's values
-        // Call this function after users are authenticated in your app and your visitor and account id values are available
-        // Please use Strings, Numbers, or Bools for value types.
         pendo.initialize({
             visitor: {
-                id:              'ravidor',   // Required if user is logged in, default creates anonymous ID
-                email:            'ravidor@pendo.io' // Recommended if using Pendo Feedback, or NPS Email
-                // full_name:    // Recommended if using Pendo Feedback
-                // role:         // Optional
-
-                // You can add any additional visitor level key-values here,
-                // as long as it's not one of the above reserved names.
+                id:              'ravidor',
+                email:            'ravidor@pendo.io'
             },
 
             account: {
-                id:           'ACME' // Required if using Pendo Feedback, default uses the value 'ACCOUNT-UNIQUE-ID'
-                // name:         // Optional
-                // is_paying:    // Recommended if using Pendo Feedback
-                // monthly_value:// Recommended if using Pendo Feedback
-                // planLevel:    // Optional
-                // planPrice:    // Optional
-                // creationDate: // Optional
-
-                // You can add any additional account level key-values here,
-                // as long as it's not one of the above reserved names.
+                id:           'ACME'
             }
         });
 })('8359b8c1-4fd4-4b5e-5ff6-87154498e673');
