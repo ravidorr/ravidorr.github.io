@@ -1,8 +1,8 @@
 # ravidorr.github.io
 
-Personal website hosted on GitHub Pages.
+A simple website for tests hosted on GitHub Pages.
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Installation
 
@@ -32,7 +32,7 @@ npm run build:prod
 
 The production build will be generated in the `dist` folder.
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 ├── src/
@@ -44,13 +44,13 @@ The production build will be generated in the `dist` folder.
 └── build/          # Build configuration
 ```
 
-## 🛠️ Technologies
+## Technologies
 
 - **Build Tool**: Webpack
 - **Styling**: LESS/CSS with PatternFly
 - **Server**: Node.js with Express
 - **Development**: BrowserSync for hot reloading
 
-## 📝 License
+## License
 
 This project is open source and available under the [MIT License](LICENSE).
