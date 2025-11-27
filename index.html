@@ -715,7 +715,11 @@
     </div>
 </div><!-- container -->
 <script>
-  console.log('*** Pendo:', window.pendo);
+function consoleLog() {
+  console.log('*** Pendo:', window.pendo);;
+}
+setTimeout(consoleLog, 30000);
+  
   // Row Checkbox Selection
   $(document).ready(function () {
     $("input[type='checkbox']").change(function (e) {
