@@ -37,7 +37,9 @@
     "build:prod": "webpack -p --config build/webpack.config.js",
     "start": "npm run build:dev && node server/app.js",
     "clean": "rm -rf dist/*",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "validate:security-policy": "node scripts/validate-security-policy-version.mjs",
+    "test:security-policy": "node --test scripts/validate-security-policy-version.test.mjs"
   },
   "repository": {
     "type": "git",
