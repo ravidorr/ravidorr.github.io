@@ -5,20 +5,23 @@ var browserSync          = require('browser-sync').create();
 var webpack              = require('webpack');
 var webpackDevMiddleware = require('webpack-dev-middleware');
 var webpackHotMiddleware = require('webpack-hot-middleware');
-var stripAnsi            = require('strip-ansi');
+var stripAnsi            = require('util').stripVTControlCharacters;
 
 /**
  * Require ./webpack.config.js and make a bundler from it
  */
 var webpackConfig = require('../build/webpack.config.js');
+
+// The dev server always builds in development mode
+webpackConfig.mode = 'development';
 var bundler       = webpack(webpackConfig);
 
 /**
  * Reload all devices when bundle is complete
  * or send a fullscreen error message to the browser instead
  */
-bundler.plugin('done', function (stats) {
-    if (stats.hasErrors() || stats.hasWarnings()) {
+bundler.hooks.done.tap('BrowserSyncReload', function (stats) {
+    if (stats.hasErrors()) {
         return browserSync.sockets.emit('fullscreen:message', {
             title: "Webpack Error:",
             body:  stripAnsi(stats.toString()),
@@ -42,10 +45,13 @@ browserSync.init({
                 publicPath: webpackConfig.output.publicPath,
 
                 // pretty colored output
-                stats: { colors: true }
+                stats: { colors: true },
+
+                // keep emitting bundles to disk, as the former WriteFilesPlugin did
+                writeToDisk: true
 
                 // for other settings see
-                // http://webpack.github.io/docs/webpack-dev-middleware.html
+                // https://github.com/webpack/webpack-dev-middleware#options
             }),
 
             // bundler should be the same as above
