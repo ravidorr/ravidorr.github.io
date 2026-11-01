@@ -55,7 +55,7 @@ overwritten by the build.
 - **Build Tool**: Webpack
 - **UI**: Bootstrap 5 with `src/css/site.css` (keeps the `*-pf` class names of the former PatternFly 3 markup), Font Awesome 6
 - **Charts**: C3 and D3
-- **Server**: Node.js with Express
+- **Server**: BrowserSync with webpack dev and hot middleware (`npm start`)
 - **Development**: BrowserSync for hot reloading
 
 ## License

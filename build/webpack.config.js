@@ -28,7 +28,7 @@ module.exports = {
     },
 
     performance: {
-        // The vendor bundle is large by design (jQuery, Bootstrap, DataTables, ...)
+        // The vendor bundle is large by design (jQuery, Bootstrap, C3 and D3)
         hints: false
     },
 
@@ -49,12 +49,6 @@ module.exports = {
     },
 
     plugins: [
-        //make webpack ignore moment locale require: https://github.com/moment/moment/issues/2517
-        new webpack.IgnorePlugin({
-            resourceRegExp: /^\.\/locale$/,
-            contextRegExp: /moment([\\/]min)?$/
-        }),
-
         //global jquery is provided to any webpack modules
         new webpack.ProvidePlugin({
             $: "jquery",

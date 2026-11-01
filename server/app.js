@@ -36,7 +36,8 @@ bundler.hooks.done.tap('BrowserSyncReload', function (stats) {
  */
 browserSync.init({
     server: {
-        baseDir: 'dist',
+        // the site is served from the repository root, where the build writes its output
+        baseDir: '.',
         logFileChanges: true,
         middleware: [
             webpackDevMiddleware(bundler, {
@@ -65,8 +66,8 @@ browserSync.init({
     // including full page reloads if HMR won't work
     files: [
         './src/js/*.js',
-        './src/less/*.less',
+        './src/css/*.css',
         './src/html/*.html',
-        'dist/**/*'
+        '*.html'
     ]
 });
