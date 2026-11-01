@@ -2,13 +2,13 @@
 
 //jQuery
 //execute files in global context with script-loader: https://github.com/webpack/script-loader
-require('script!jquery/dist/jquery.min');
+require('script-loader!jquery/dist/jquery.min');
 
 //Bootstrap JS
 require('bootstrap/dist/js/bootstrap.min');
 
 //Datatables, jQuery Grid Component
-require('datatables/media/js/jquery.dataTables.min');
+require('datatables.net');
 require('drmonty-datatables-colvis/js/dataTables.colVis');
 require('datatables.net-colreorder/js/dataTables.colReorder');
 
