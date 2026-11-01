@@ -1,48 +1,26 @@
-//PatternFly JS Dependencies Entry
+//Site entry: Bootstrap 5, icons, site styles and the few page behaviours the pages rely on
+
+//Styles (extracted by MiniCssExtractPlugin to css/main.css)
+require('bootstrap/dist/css/bootstrap.min.css');
+require('@fortawesome/fontawesome-free/css/fontawesome.min.css');
+require('@fortawesome/fontawesome-free/css/solid.min.css');
+require('@fortawesome/fontawesome-free/css/regular.min.css');
+require('@fortawesome/fontawesome-free/css/v4-shims.min.css');
+require('c3/c3.min.css');
+require('../css/site.css');
 
 //jQuery
 //execute files in global context with script-loader: https://github.com/webpack/script-loader
 require('script-loader!jquery/dist/jquery.min');
 
-//Bootstrap JS
-require('bootstrap/dist/js/bootstrap.min');
-
-//Datatables, jQuery Grid Component
-require('datatables.net');
-require('drmonty-datatables-colvis/js/dataTables.colVis');
-require('datatables.net-colreorder/js/dataTables.colReorder');
-
-//PatternFly Custom Componets -  Sidebar, Popovers and Datatables Customizations
-//Note: datatables.net must be required before patternfly*.js. The colVis plugin above still
-//requires the legacy `datatables` module, which build/webpack.config.js aliases to datatables.net.
-require('patternfly/dist/js/patternfly.min.js');
-
-//Moment
-require('moment/min/moment.min');
-
-//Bootstrap Combobox
-require('patternfly-bootstrap-combobox/js/bootstrap-combobox');
-
-//Bootstrap Date Picker
-require('bootstrap-datepicker/dist/js/bootstrap-datepicker.min');
-
-//Bootstrap Date Time Picker - requires Moment
-require('eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min');
-
-//Bootstrap Select
-require('bootstrap-select/dist/js/bootstrap-select.min');
-
-//Bootstrap Touchspin
-require('bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min');
-
-//Bootstrap Tree View
-require('patternfly-bootstrap-treeview/dist/bootstrap-treeview.min');
-
-//Google Code Prettify - Syntax highlighting of code snippets
-require('google-code-prettify/bin/prettify.min');
+//Bootstrap JS (bundle includes Popper). Exposed as window.bootstrap
+window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.min');
 
 //MatchHeight - Used to make sure dashboard cards are the same height
 require('jquery-match-height');
 
-//Angular Application? You May Want to Consider Pulling Angular-PatternFly And Angular-UI Bootstrap instead of bootstrap.js
-//See https://github.com/patternfly/angular-patternfly for more information
+//C3 donut and sparkline defaults (replacement for the PatternFly 3 helper)
+require('./chart-defaults');
+
+//Tooltips are opt-in in Bootstrap 5
+require('./site');
