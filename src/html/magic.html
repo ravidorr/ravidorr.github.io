@@ -48,11 +48,18 @@
 				}
 			];
 
-			var account = accounts[Math.floor(Math.random() * accounts.length)];
+			// Cryptographically secure random integer in [0, max)
+			function randomInt(max) {
+				var buf = new Uint32Array(1);
+				window.crypto.getRandomValues(buf);
+				return buf[0] % max;
+			}
+
+			var account = accounts[randomInt(accounts.length)];
 
 			pendo.initialize({
 				visitor: {
-					id: queryString.visitor || Math.floor(Math.random() * 999999)
+					id: queryString.visitor || randomInt(999999)
 				},
 				apiKey: 'c9629d5c-7ce7-4a72-638e-f19cba667267',
 				account: account
