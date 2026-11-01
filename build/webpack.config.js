@@ -11,8 +11,7 @@ module.exports = {
 
     entry: {
         'main': './src/js/main',
-        'charts': './src/js/charts',
-        'custom': './src/js/custom'
+        'charts': './src/js/charts'
     },
 
     output: {
@@ -70,7 +69,13 @@ module.exports = {
                 // img/ is intentionally not copied: the committed img/ folder holds
                 // site-specific files that differ from patternfly's.
                 { from: 'node_modules/patternfly/dist/fonts/*.*', to: 'fonts/[name][ext]' },
-                { from: 'node_modules/patternfly/dist/css/*.*', to: 'css/[name][ext]' }
+                // The rcue* (Red Hat Customer Portal) theme is not used by any page and its
+                // stylesheets reference background images that patternfly does not ship.
+                {
+                    from: 'node_modules/patternfly/dist/css/*.*',
+                    to: 'css/[name][ext]',
+                    globOptions: { ignore: ['**/rcue*'] }
+                }
             ]
         }),
 
