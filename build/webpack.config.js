@@ -62,34 +62,18 @@ module.exports = {
             "window.jQuery": "jquery"
         }),
 
-        //copy patternfly assets for demo app
+        //copy the page templates to the site root
         new CopyWebpackPlugin({
             patterns: [
-                { from: 'src/html/*.html', to: '[name][ext]' },
+                { from: 'src/html/*.html', to: '[name][ext]' }
                 // img/ is intentionally not copied: the committed img/ folder holds
-                // site-specific files that differ from patternfly's.
-                { from: 'node_modules/patternfly/dist/fonts/*.*', to: 'fonts/[name][ext]' },
-                // The rcue* (Red Hat Customer Portal) theme is not used by any page and its
-                // stylesheets reference background images that patternfly does not ship.
-                {
-                    from: 'node_modules/patternfly/dist/css/*.*',
-                    to: 'css/[name][ext]',
-                    globOptions: { ignore: ['**/rcue*'] }
-                }
+                // site-specific files.
             ]
         }),
 
         //creates distribution css file rather than inlining styles
-        new MiniCssExtractPlugin({ filename: '[name].css' })
+        new MiniCssExtractPlugin({ filename: 'css/[name].css' })
     ],
-
-    resolve: {
-        alias: {
-            // drmonty-datatables-colvis still requires the legacy `datatables` package,
-            // which patternfly 3.59 no longer installs. datatables.net is its successor.
-            datatables$: 'datatables.net'
-        }
-    },
 
     module: {
         rules: [
@@ -104,18 +88,14 @@ module.exports = {
                 }
             },
 
-            // bundle LESS and CSS auto-generating -vendor-prefixes
+            // bundle CSS
             {
                 test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader']
-            },
-            {
-                test: /\.less$/,
+                // css is emitted to css/, assets to the site root folders, so urls need to go up one level
                 use: [
-                    MiniCssExtractPlugin.loader,
-                    'css-loader',
-                    'postcss-loader',
-                    'less-loader'
+                    { loader: MiniCssExtractPlugin.loader, options: { publicPath: '../' } },
+                    // keep the committed ../img/ urls as written: img/ is not processed by webpack
+                    { loader: 'css-loader', options: { url: { filter: function (url) { return !url.startsWith('../img/'); } } } }
                 ]
             },
 
@@ -124,7 +104,7 @@ module.exports = {
                 test: /\.(svg|woff2?|ttf|eot)(\?\S*)?$/,
                 type: 'asset',
                 parser: { dataUrlCondition: { maxSize: 65000 } },
-                generator: { filename: '[name][ext]' }
+                generator: { filename: 'fonts/[name][ext]' }
             },
             {
                 test: /\.(png|jpe?g|gif)(\?\S*)?$/,

@@ -2,11 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ravidorr Enterprise Application</title>
 
     <!-- webpack bundled css -->
-    <link rel="stylesheet" href="css/patternfly.min.css">
-    <link rel="stylesheet" href="css/patternfly-additions.min.css">
+    <link rel="stylesheet" href="css/main.css">
 
     <!-- webpack bundled dependencies -->
     <script src="main.bundle.js"></script>
@@ -71,13 +71,10 @@
   <body>
 
 <!-- nav -->
-<nav class="navbar navbar-default navbar-pf" role="navigation">
+<nav class="navbar navbar-expand-md navbar-pf" role="navigation">
   <div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-1">
-      <span class="sr-only">Toggle navigation</span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
+    <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse-1" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="/">
       <img src="img/brand.png" alt="ravidorr Enterprise Application" />
@@ -89,41 +86,41 @@
         <a href="#">Status</a>
       </li>
       <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
           <span class="pficon pficon-user"></span>
-          Albus Dumbledore <b class="caret"></b>
+          Albus Dumbledore
         </a>
         <ul class="dropdown-menu">
           <li>
-            <a href="#">Settings</a>
+            <a class="dropdown-item" href="#">Settings</a>
           </li>
           <li>
-            <a href="#">Another link</a>
+            <a class="dropdown-item" href="#">Another link</a>
           </li>
           <li>
-            <a href="#">Something else here</a>
+            <a class="dropdown-item" href="#">Something else here</a>
           </li>
-          <li class="divider"></li>
+          <li><hr class="dropdown-divider"></li>
           <li class="dropdown-submenu">
-            <a tabindex="-1" href="#">More options</a>
+            <a class="dropdown-item" tabindex="-1" href="#">More options</a>
             <ul class="dropdown-menu">
               <li>
-                <a href="#">Link</a>
+                <a class="dropdown-item" href="#">Link</a>
               </li>
               <li>
-                <a href="#">Another link</a>
+                <a class="dropdown-item" href="#">Another link</a>
               </li>
               <li>
-                <a href="#">Something else here</a>
+                <a class="dropdown-item" href="#">Something else here</a>
               </li>
-              <li class="divider"></li>
-              <li class="dropdown-header">Nav header</li>
+              <li><hr class="dropdown-divider"></li>
+              <li><h6 class="dropdown-header">Nav header</h6></li>
               <li>
-                <a href="#">Separated link</a>
+                <a class="dropdown-item" href="#">Separated link</a>
               </li>
-              <li class="divider"></li>
+              <li><hr class="dropdown-divider"></li>
               <li>
-                <a href="#">One more separated link</a>
+                <a class="dropdown-item" href="#">One more separated link</a>
               </li>
             </ul>
           </li>
@@ -151,7 +148,7 @@
 <div class="container-fluid">
 
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-lg-12">
 
         <div class="page-header">
           <h1>Main Title</h1>
