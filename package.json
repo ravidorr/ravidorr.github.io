@@ -17,7 +17,7 @@
     "bootstrap-touchspin": "~3.1.1",
     "c3": "^0.4.24",
     "d3": "~3.5.17",
-    "datatables.net": "^3.1.5",
+    "datatables.net": "~1.13.11",
     "datatables.net-colreorder": "^1.7.2",
     "drmonty-datatables-colvis": "~1.1.2",
     "eonasdan-bootstrap-datetimepicker": "^4.17.49",
