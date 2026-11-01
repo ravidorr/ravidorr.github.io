@@ -11,9 +11,9 @@
     "node": ">=20.9"
   },
   "dependencies": {
-    "bootstrap": "~3.4.1",
+    "bootstrap": "~5.0.0",
     "bootstrap-datepicker": "^1.10.1",
-    "bootstrap-select": "^1.13.6",
+    "bootstrap-select": "^1.13.7",
     "bootstrap-touchspin": "~3.1.1",
     "c3": "^0.4.24",
     "d3": "~3.5.17",
@@ -36,7 +36,7 @@
     "babel-loader": "^9.2.1",
     "browser-sync": "^3.0.4",
     "bs-fullscreen-message": "^1.0.0",
-    "copy-webpack-plugin": "^13.0.1",
+    "copy-webpack-plugin": "^14.0.0",
     "css-loader": "^7.1.5",
     "less": "^4.9.1",
     "less-loader": "^12.3.3",
