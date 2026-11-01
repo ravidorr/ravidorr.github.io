@@ -78,6 +78,14 @@ module.exports = {
         new MiniCssExtractPlugin({ filename: '[name].css' })
     ],
 
+    resolve: {
+        alias: {
+            // drmonty-datatables-colvis still requires the legacy `datatables` package,
+            // which patternfly 3.59 no longer installs. datatables.net is its successor.
+            datatables$: 'datatables.net'
+        }
+    },
+
     module: {
         rules: [
             //js loader

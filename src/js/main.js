@@ -8,12 +8,13 @@ require('script-loader!jquery/dist/jquery.min');
 require('bootstrap/dist/js/bootstrap.min');
 
 //Datatables, jQuery Grid Component
-require('datatables/media/js/jquery.dataTables.min');
+require('datatables.net');
 require('drmonty-datatables-colvis/js/dataTables.colVis');
 require('datatables.net-colreorder/js/dataTables.colReorder');
 
 //PatternFly Custom Componets -  Sidebar, Popovers and Datatables Customizations
-//Note: jquery.dataTables.js must occur in the html source before patternfly*.js
+//Note: datatables.net must be required before patternfly*.js. The colVis plugin above still
+//requires the legacy `datatables` module, which build/webpack.config.js aliases to datatables.net.
 require('patternfly/dist/js/patternfly.min.js');
 
 //Moment
