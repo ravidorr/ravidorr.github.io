@@ -1,14 +1,11 @@
 // For instructions about this file refer to
-// webpack documentation: https://webpack.github.io/docs/
-var webpack = require('webpack');
-var path = require('path');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var WriteFilesPlugin = require('write-file-webpack-plugin');
+// webpack documentation: https://webpack.js.org/configuration/
+const webpack = require('webpack');
+const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-    debug: true,
-
     devtool: 'source-map',
 
     entry: {
@@ -18,34 +15,34 @@ module.exports = {
     },
 
     output: {
+        // The site is served from the repository root, so bundles are emitted there.
+        // Never enable `output.clean` here: it would wipe the whole repository.
         path: path.join(__dirname, '../'),
         publicPath: './',
-        filename: '[name].bundle.js',
-        hotUpdateChunkFilename: 'hot/[id].[hash].hot-update.js',
-        hotUpdateMainFilename: 'hot/[hash].hot-update.json'
+        filename: '[name].bundle.js'
     },
 
     externals: {
-        // require("jquery") is external and available on the global var jQuery
-        "jquery": "jQuery",
+        // require("jquery") is external and available on the global var $
         "jquery": "$"
     },
 
+    performance: {
+        // The vendor bundle is large by design (jQuery, Bootstrap, DataTables, ...)
+        hints: false
+    },
+
+    optimization: {
+        // Avoid publishing files when compilation failed
+        emitOnErrors: false
+    },
+
     plugins: [
-        // Avoid publishing files when compilation failed:
-        new webpack.NoErrorsPlugin(),
-
-        //optimizes webpack id order
-        new webpack.optimize.OccurenceOrderPlugin(),
-
-        //HMR
-        new webpack.HotModuleReplacementPlugin(),
-
-        // Remove duplicate modules (should they occur):
-        new webpack.optimize.DedupePlugin(),
-
         //make webpack ignore moment locale require: https://github.com/moment/moment/issues/2517
-        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        new webpack.IgnorePlugin({
+            resourceRegExp: /^\.\/locale$/,
+            contextRegExp: /moment([\\/]min)?$/
+        }),
 
         //global jquery is provided to any webpack modules
         new webpack.ProvidePlugin({
@@ -55,88 +52,54 @@ module.exports = {
         }),
 
         //copy patternfly assets for demo app
-        new CopyWebpackPlugin([
-            {
-                from: { glob:'./src/html/*.html'},
-                to: './',
-                flatten: true
-            },
-            {
-                from: { glob: './node_modules/patternfly/img/*.*'},
-                to: './img',
-                flatten: true
-            },
-            {
-                from: { glob: './node_modules/patternfly/fonts/*.*'},
-                to: './fonts',
-                flatten: true
-            },
-            {
-                from: { glob: './node_modules/patternfly/css/*.*'},
-                to: './css',
-                flatten: true
-            }
-        ]),
+        new CopyWebpackPlugin({
+            patterns: [
+                { from: 'src/html/*.html', to: '[name][ext]' },
+                // img/ is intentionally not copied: the committed img/ folder holds
+                // site-specific files that differ from patternfly's.
+                { from: 'node_modules/patternfly/dist/fonts/*.*', to: 'fonts/[name][ext]' },
+                { from: 'node_modules/patternfly/dist/css/*.*', to: 'css/[name][ext]' }
+            ]
+        }),
 
         //creates distribution css file rather than inlining styles
-        new ExtractTextPlugin("[name].css", {allChunks: false}),
-
-        //writes files on changes to src
-        new WriteFilesPlugin()
+        new MiniCssExtractPlugin({ filename: '[name].css' })
     ],
 
     module: {
-        loaders: [
+        rules: [
             //js loader
             {
-                loader: "babel-loader",
-
                 // Only run `.js` and `.jsx` files through Babel
                 test: /\.jsx?$/,
-
                 exclude: /node_modules/,
-
-                // Options to configure babel with
-                query: {
-                    plugins: ['transform-runtime'],
-                    presets: ['es2015', 'stage-0']
+                loader: 'babel-loader',
+                options: {
+                    presets: ['@babel/preset-env']
                 }
             },
 
             // bundle LESS and CSS auto-generating -vendor-prefixes
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract("style-loader", "css-loader?sourceMap")
+                use: [MiniCssExtractPlugin.loader, 'css-loader']
             },
             {
                 test: /\.less$/,
-                loader: ExtractTextPlugin.extract("style-loader", "css-loader?sourceMap!autoprefixer-loader!less-loader")
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    'postcss-loader',
+                    'less-loader'
+                ]
             },
 
-            //font/image url loaders
+            //font/image loaders: inline small files, emit the rest as [name].[ext]
             {
-                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'url?limit=65000&mimetype=image/svg+xml&name=[name].[ext]'
-            },
-            {
-                test: /\.(woff)(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'url?limit=65000&mimetype=application/font-woff&name=[name].[ext]'
-            },
-            {
-                test: /\.(woff2)(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'url?limit=65000&mimetype=application/font-woff2&name=[name].[ext]'
-            },
-            {
-                test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'url?limit=65000&mimetype=application/octet-stream&name=[name].[ext]'
-            },
-            {
-                test:  /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'url?limit=65000&mimetype=application/vnd.ms-fontobject&name[name].[ext]'
-            },
-            {
-                test: /\.(png|jpe?g|gif)(\?\S*)?$/,
-                loader: 'url?limit=100000&name=[name].[ext]'
+                test: /\.(svg|woff2?|ttf|eot|png|jpe?g|gif)(\?\S*)?$/,
+                type: 'asset',
+                parser: { dataUrlCondition: { maxSize: 65000 } },
+                generator: { filename: '[name][ext]' }
             }
         ]
     }

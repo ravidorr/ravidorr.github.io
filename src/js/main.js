@@ -2,7 +2,7 @@
 
 //jQuery
 //execute files in global context with script-loader: https://github.com/webpack/script-loader
-require('script!jquery/dist/jquery.min');
+require('script-loader!jquery/dist/jquery.min');
 
 //Bootstrap JS
 require('bootstrap/dist/js/bootstrap.min');
