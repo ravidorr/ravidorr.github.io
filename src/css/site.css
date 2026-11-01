@@ -885,18 +885,10 @@ td > .progress:first-child:last-child {
   }
 }
 @media (min-width: 768px) {
-  .navbar-pf .navbar-brand {
-    padding: 8px 0 7px;
-  }
   .navbar-pf .navbar-nav > li > a,
   .navbar-pf .navbar-nav > li > button {
     padding-bottom: 14px;
     padding-top: 14px;
-  }
-  .navbar-pf .navbar-primary {
-    font-size: 14px;
-    background-image: linear-gradient(to bottom, #1d1d1d 0%, #030303 100%);
-    background-repeat: repeat-x;
   }
   .navbar-pf .navbar-primary > li > a,
   .navbar-pf .navbar-primary > li > button {
@@ -956,16 +948,6 @@ td > .progress:first-child:last-child {
     background: rgba(255, 255, 255, 0.14);
     border-left-color: #373737;
     outline: 0;
-  }
-}
-@media (max-width: 360px) {
-  .navbar-pf .navbar-brand {
-    margin-left: 10px;
-    width: 75%;
-  }
-  .navbar-pf .navbar-brand img {
-    height: auto;
-    max-width: 100%;
   }
 }
 .toolbar-pf .form-group {
@@ -1321,8 +1303,7 @@ ul.dropdown-menu { list-style: none; }
   clear: right;
   color: #fff;
   padding-bottom: 40px;
-  padding-top: 20px;
-  width: auto; max-width: none; }
+  padding-top: 20px; max-width: none; }
 .login-pf .container .login .form-group { margin-left: 0; margin-right: 0; }
 .toolbar-pf {
   background: #fff;
@@ -1358,3 +1339,8 @@ ul.dropdown-menu { list-style: none; }
 .progress-bar-success { background-color: #3f9c35; }
 .progress-bar-warning { background-color: #ec7a08; }
 .progress-bar-danger { background-color: #cc0000; }
+/* Very narrow screens (declared last so it wins over the base brand rules) */
+@media (max-width: 360px) {
+  .navbar-pf .navbar-brand { margin-left: 10px; width: 75%; }
+  .navbar-pf .navbar-brand img { height: auto; max-width: 100%; }
+}
