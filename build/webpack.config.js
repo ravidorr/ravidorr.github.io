@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
     devtool: 'source-map',
@@ -34,7 +35,18 @@ module.exports = {
 
     optimization: {
         // Avoid publishing files when compilation failed
-        emitOnErrors: false
+        emitOnErrors: false,
+
+        // Keep license comments inline instead of emitting *.LICENSE.txt files,
+        // because the output directory is the repository root
+        minimizer: [
+            new TerserPlugin({
+                extractComments: false,
+                terserOptions: {
+                    format: { comments: /^\**!|@preserve|@license|@cc_on/i }
+                }
+            })
+        ]
     },
 
     plugins: [
@@ -96,9 +108,15 @@ module.exports = {
 
             //font/image loaders: inline small files, emit the rest as [name].[ext]
             {
-                test: /\.(svg|woff2?|ttf|eot|png|jpe?g|gif)(\?\S*)?$/,
+                test: /\.(svg|woff2?|ttf|eot)(\?\S*)?$/,
                 type: 'asset',
                 parser: { dataUrlCondition: { maxSize: 65000 } },
+                generator: { filename: '[name][ext]' }
+            },
+            {
+                test: /\.(png|jpe?g|gif)(\?\S*)?$/,
+                type: 'asset',
+                parser: { dataUrlCondition: { maxSize: 100000 } },
                 generator: { filename: '[name][ext]' }
             }
         ]

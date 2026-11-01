@@ -14,9 +14,6 @@ var webpackConfig = require('../build/webpack.config.js');
 
 // The dev server always builds in development mode
 webpackConfig.mode = 'development';
-
-// Hot module replacement is only needed by the dev server, not by static builds
-webpackConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
 var bundler       = webpack(webpackConfig);
 
 /**
@@ -24,7 +21,7 @@ var bundler       = webpack(webpackConfig);
  * or send a fullscreen error message to the browser instead
  */
 bundler.hooks.done.tap('BrowserSyncReload', function (stats) {
-    if (stats.hasErrors() || stats.hasWarnings()) {
+    if (stats.hasErrors()) {
         return browserSync.sockets.emit('fullscreen:message', {
             title: "Webpack Error:",
             body:  stripAnsi(stats.toString()),
