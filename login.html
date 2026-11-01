@@ -2,11 +2,11 @@
 <html class="login-pf">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ravidorr Enterprise Application</title>
 
     <!-- webpack bundled css -->
-    <link rel="stylesheet" href="css/patternfly.min.css">
-    <link rel="stylesheet" href="css/patternfly-additions.min.css">
+    <link rel="stylesheet" href="css/main.css">
 
     <!-- webpack bundled dependencies -->
     <script src="main.bundle.js"></script>
@@ -76,41 +76,40 @@
     </span>
     <div class="container">
       <div class="row">
-        <div class="col-sm-12">
+        <div class="col-md-12">
           <div id="brand">
             <img src="img/brand.png" alt="PatternFly Enterprise Application">
           </div><!--/#brand-->
         </div><!--/.col-*-->
-        <div class="col-sm-7 col-md-6 col-lg-5 login">
+        <div class="col-md-7 col-lg-6 col-xl-5 login">
           <form class="form-horizontal" role="form" action="index.html">
-            <div class="form-group">
-              <label for="inputUsername" class="col-sm-2 col-md-2 control-label">Username</label>
-              <div class="col-sm-10 col-md-10">
+            <div class="form-group row">
+              <label for="inputUsername" class="col-md-2 col-lg-2 col-form-label">Username</label>
+              <div class="col-md-10 col-lg-10">
                 <input type="text" class="form-control" id="inputUsername" placeholder="" tabindex="1">
               </div>
             </div>
-            <div class="form-group">
-              <label for="inputPassword" class="col-sm-2 col-md-2 control-label">Password</label>
-              <div class="col-sm-10 col-md-10">
+            <div class="form-group row">
+              <label for="inputPassword" class="col-md-2 col-lg-2 col-form-label">Password</label>
+              <div class="col-md-10 col-lg-10">
                 <input type="password" class="form-control" id="inputPassword" placeholder="" tabindex="2">
               </div>
             </div>
-            <div class="form-group">
-              <div class="col-xs-8 col-sm-offset-2 col-sm-6 col-md-offset-2 col-md-6">
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" tabindex="3"> Remember username
-                  </label>
+            <div class="form-group row">
+              <div class="col-8 offset-md-2 col-md-6 offset-lg-2 col-lg-6">
+                <div class="checkbox form-check">
+                  <input type="checkbox" class="form-check-input" id="inputRemember" tabindex="3">
+                  <label class="form-check-label" for="inputRemember">Remember username</label>
                 </div>
-                <span class="help-block"> Forgot <a href="#" tabindex="5">username</a> or <a href="#" tabindex="6">password</a>?</span>
+                <span class="help-block form-text"> Forgot <a href="#" tabindex="5">username</a> or <a href="#" tabindex="6">password</a>?</span>
               </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 submit">
+              <div class="col-4 col-md-4 col-lg-4 submit">
                 <button type="submit" class="btn btn-primary btn-lg" tabindex="4">Log In</button>
               </div>
             </div>
           </form>
         </div><!--/.col-*-->
-        <div class="col-sm-5 col-md-6 col-lg-7 details">
+        <div class="col-md-5 col-lg-6 col-xl-7 details">
           <p><strong>Welcome to PatternFly | open interface project!</strong>
             This is placeholder text, only. Use this area to place any information or introductory message about your application that may be relevant for users. For example, you might include news or information about the latest release of your product here&mdash;such as a version number.</p>
         </div><!--/.col-*-->
